@@ -1,43 +1,90 @@
 <?php
 session_start();
 
-require_once "../classes/database.php";
+require_once "../classes/Database.php";
 require_once "../classes/User.php";
+require_once "../classes/Validate.php";
 
 $db = new Database();
 $conn = $db->connect();
 
 $user = new User($conn);
 
-if(isset($_POST['register'])) {
+if (isset($_POST['register'])) {
 
-    $fullname = $_POST['fullname'];
-    $email = $_POST['email'];
+    $fullname = trim($_POST['fullname']);
+    $email = trim($_POST['email']);
     $password = $_POST['password'];
+    $confirm_password = $_POST['confirm_password'];
     $role = $_POST['role'] ?? '';
 
-    /* 🚨 VALIDATE ROLE (IMPORTANT FIX) */
-    if($role !== 'tutor' && $role !== 'parent') {
-        $_SESSION['error'] = "Invalid role selected!";
+    // Validate fullname
+    $error = Validate::validateFullName($fullname);
+
+    if ($error) {
+        $_SESSION['error'] = $error;
         header("Location: ../auth/register.php");
         exit();
     }
 
-    /* hash password */
-    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+    // Validate email
+    $error = Validate::validateEmail($email);
 
-    $result = $user->register($fullname, $email, $hashedPassword, $role);
+    if ($error) {
+        $_SESSION['error'] = $error;
+        header("Location: ../auth/register.php");
+        exit();
+    }
 
-    if($result) {
+    // Validate password
+    $error = Validate::validatePassword($password);
 
-        $_SESSION['success'] = "Account created successfully! Please login.";
+    if ($error) {
+        $_SESSION['error'] = $error;
+        header("Location: ../auth/register.php");
+        exit();
+    }
+
+    // Validate confirm password
+    $error = Validate::validateConfirmPassword(
+        $password,
+        $confirm_password
+    );
+
+    if ($error) {
+        $_SESSION['error'] = $error;
+        header("Location: ../auth/register.php");
+        exit();
+    }
+
+    // Validate role
+    $error = Validate::validateRole($role);
+
+    if ($error) {
+        $_SESSION['error'] = $error;
+        header("Location: ../auth/register.php");
+        exit();
+    }
+
+    $result = $user->register(
+        $fullname,
+        $email,
+        $password,
+        $role
+    );
+
+    if ($result) {
+
+        $_SESSION['success'] =
+            "Account created successfully! Please login.";
+
         header("Location: ../auth/login.php");
         exit();
-
-    } else {
-
-        $_SESSION['error'] = "Registration failed! Email may already exist.";
-        header("Location: ../auth/register.php");
-        exit();
     }
+
+    $_SESSION['error'] =
+        "Registration failed! Email may already exist.";
+
+    header("Location: ../auth/register.php");
+    exit();
 }

@@ -54,8 +54,8 @@ include 'includes/navbar.php';?>
       </p>
 
       <div class="hero-buttons">
-        <a href="#" class="btn-primary">Find Tutors</a>
-        <a href="#" class="btn-secondary">Become a Tutor</a>
+        <a href="auth/login.php" class="btn-primary">Find Tutors</a>
+        <a href="auth/register.php" class="btn-secondary">Become a Tutor</a>
       </div>
 
       <div class="hero-stats">

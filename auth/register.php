@@ -69,13 +69,8 @@ session_start();
 </div>
 
 <div class="input-group">
-<label>Experience</label>
-<input type="text" name="experience">
-</div>
-
-<div class="input-group full-width">
-<label>Subjects</label>
-<input type="text" name="subjects">
+<label>Confirm Password</label>
+<input type="password" name="confirm_password" required>
 </div>
 
 </div>
@@ -104,7 +99,10 @@ session_start();
 <label>Password</label>
 <input type="password" name="password" required>
 </div>
-
+<div class="input-group">
+<label>Confirm Password</label>
+<input type="password" name="confirm_password" required>
+</div>
 </div>
 
 <button class="submit-btn" name="register">Create Parent Account</button>

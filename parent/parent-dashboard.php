@@ -31,7 +31,7 @@ $fullname = $_SESSION['fullname'] ?? 'Parent';
 
 <body>
 
-<?php include '../includes/p-navbar.php'; ?>
+<?php include '../includes/parent-navbar.php'; ?>
 
 <section class="top-tutors">
 

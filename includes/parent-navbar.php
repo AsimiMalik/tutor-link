@@ -8,7 +8,7 @@
     </a>
 
     <ul class="nav-links">
-        <li><a href="../parent/dashboard.php">Dashboard</a></li>
+        <li><a href="../parent/parent-dashboard.php">Dashboard</a></li>
         <li><a href="#">Find Tutors</a></li>
         <li><a href="#">My Bookings</a></li>
         <li><a href="#">Messages</a></li>
