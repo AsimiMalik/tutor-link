@@ -4,6 +4,13 @@ session_start();
 require_once "../classes/Database.php";
 require_once "../classes/User.php";
 require_once "../classes/Validate.php";
+require_once __DIR__ . '/../includes/csrf.php';
+
+if (!isset($_POST['_csrf']) || !verify_csrf($_POST['_csrf'])) {
+    $_SESSION['error'] = 'Invalid CSRF token.';
+    header("Location: ../auth/register.php");
+    exit();
+}
 
 $db = new Database();
 $conn = $db->connect();

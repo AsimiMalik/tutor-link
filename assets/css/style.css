@@ -1,405 +1,487 @@
+/* =========================
+   GLOBAL THEME VARIABLES
+   (Used anywhere in HTML)
+========================= */
 :root{
-    --primary:#2563eb;
-    --primary-dark:#1d4ed8;
-    --secondary:#f59e0b;
-    --dark:#0f172a;
-    --text:#475569;
-    --light:#ffffff;
-    --bg:#f8fafc;
-    --border:#e2e8f0;
-  }
-  
-  *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Poppins',sans-serif;
-  }
-  
-  body{
-    background:var(--bg);
-    color:var(--dark);
-    overflow-x:hidden;
-  }
-  
-  .container{
-    width:90%;
-    max-width:1300px;
-    margin:auto;
-  }
-  
-  .navbar{
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    background:white;
-    z-index:1000;
-    box-shadow:0 2px 20px rgba(0,0,0,.05);
-  }
-  
-  .nav-container{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:18px 0;
-  }
-  
-  .logo{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    text-decoration:none;
-    color:var(--dark);
-    font-size:26px;
-    font-weight:700;
-  }
-  
-  .logo img{
-    width:50px;
-  }
-  
-  .accent{
-    color:var(--secondary);
-  }
-  
-  .nav-links{
-    display:flex;
-    gap:30px;
-    list-style:none;
-  }
-  
-  .nav-links a{
-    text-decoration:none;
-    color:var(--dark);
-    font-weight:500;
-  }
-  
-  .nav-buttons{
-    display:flex;
-    gap:12px;
-  }
-  
-  .btn-primary,
-  .cta-btn,
-  .search-btn{
-    background:var(--primary);
-    color:white;
-    text-decoration:none;
-    border:none;
-    padding:14px 28px;
-    border-radius:12px;
-    font-weight:600;
-    cursor:pointer;
-  }
-  
-  .btn-outline{
-    border:2px solid var(--primary);
-    color:var(--primary);
-    padding:12px 24px;
-    border-radius:12px;
-    text-decoration:none;
-    font-weight:600;
-  }
-  
-  .btn-secondary{
-    border:2px solid var(--secondary);
-    color:var(--secondary);
-    text-decoration:none;
-    padding:14px 28px;
-    border-radius:12px;
-    font-weight:600;
-  }
-  
-  .hero{
-    min-height:100vh;
-    padding-top:120px;
-    display:flex;
-    align-items:center;
-    position:relative;
-    background:url('assets/images/hero-image.png') center/cover;
-  }
-  
-  .hero-overlay{
-    position:absolute;
-    inset:0;
-    background:rgba(15,23,42,.7);
-  }
-  
-  .hero-content{
-    position:relative;
-    z-index:2;
-  }
-  
-  .hero-text{
-    max-width:700px;
-  }
-  
-  .hero h1{
-    color:white;
-    font-size:70px;
-    line-height:1.1;
-    margin-bottom:20px;
-  }
-  
-  .hero h1 span{
-    color:var(--secondary);
-  }
-  
-  .hero p{
-    color:#e2e8f0;
-    line-height:1.8;
-    margin-bottom:30px;
-  }
-  
-  .hero-badge{
-    display:inline-flex;
-    gap:10px;
-    padding:12px 20px;
-    border-radius:50px;
-    background:rgba(255,255,255,.15);
-    color:white;
-    margin-bottom:25px;
-  }
-  
-  .hero-buttons{
-    display:flex;
-    gap:15px;
-    margin-bottom:40px;
-  }
-  
-  .hero-stats{
-    display:flex;
-    gap:40px;
-  }
-  
-  .stat h3{
-    color:white;
-  }
-  
-  .stat p{
-    color:#cbd5e1;
-  }
-  
-  .section-title{
-    text-align:center;
-    margin-bottom:60px;
-  }
-  
-  .section-title h2{
-    font-size:48px;
-    margin-bottom:15px;
-  }
-  
-  .search-section,
-  .top-tutors,
-  .why-us,
-  .cta{
-    padding:100px 0;
-  }
-  
-  .search-card{
-    background:white;
-    border-radius:25px;
-    padding:25px;
-    box-shadow:0 15px 40px rgba(0,0,0,.08);
-    display:grid;
-    grid-template-columns:2fr 1.5fr 1.5fr auto;
-    gap:15px;
-  }
-  
-  .search-field{
-    display:flex;
-    align-items:center;
-    gap:12px;
-    border:1px solid #e2e8f0;
-    border-radius:15px;
-    padding:16px;
-  }
-  
-  .search-field input{
-    width:100%;
-    border:none;
-    outline:none;
-  }
-  
-  .tutor-card{
-    background:white;
-    border-radius:25px;
-    overflow:hidden;
-    box-shadow:0 15px 40px rgba(0,0,0,0.06);
-  
-    display:flex;
-    flex-direction:column;
-  
-    text-align:center;
-    transition:.3s;
-  
-    height:100%;
-  }
-  
-  .tutor-card:hover{
-    transform:translateY(-10px);
-  }
-  
-  .tutor-card img{
-    width:100%;
-    height:280px;
-    object-fit:cover;
-  }
-  
-  .tutor-card h3{
-    margin:15px 0 8px;
-  }
-  
-  .tutor-card p{
-    padding:15px 25px;
-    color:var(--text);
-    line-height:1.7;
-  
-    flex-grow:1; /* pushes button downward */
-  }
-  
-  .tutor-card .btn-primary{
-    margin:20px;
-    margin-top:auto;
-  }
-  .tutors-grid{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:30px;
-    align-items:stretch;
-  }
-  
-  .subject{
-    color:var(--primary);
-    font-weight:600;
-  }
-  
-  .feature-card i{
-    font-size:30px;
-    color:var(--primary);
-    margin-bottom:15px;
-  }
-    .cta-box{
-    background:linear-gradient(
-    135deg,
-    #2563eb,
-    #1e40af
-    );
-  
-    color:white;
-    text-align:center;
-    border-radius:35px;
-  
-    padding:80px 60px;
-  
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-  }
-  .cta-btn{
-    margin-top:10px;
-  }
-  
-  .btn-primary{
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-  }
-  
-  .footer{
-    background:#021b50;
-    color:white;
-    padding:80px 0 30px;
-  }
-  
-  .footer-grid{
-    display:grid;
-    grid-template-columns:2fr 1fr 1fr 1fr;
-    gap:40px;
-  }
-  
-  .footer-logo{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    margin-bottom:20px;
-  }
-  
-  .footer-logo img{
-    width:50px;
-  }
-  
-  .footer-links{
-    display:flex;
-    flex-direction:column;
-  }
-  
-  .footer-links h3{
-    margin-bottom:20px;
-  }
-  
-  .footer-links a{
-    color:#cbd5e1;
-    text-decoration:none;
-    margin-bottom:10px;
-  }
-  
-  .footer-bottom{
-    text-align:center;
-    margin-top:40px;
-    padding-top:20px;
-    border-top:1px solid rgba(255,255,255,.1);
-  }
-  
-  @media(max-width:1000px){
-  
-    .search-card,
-    .tutors-grid,
-    .features-grid,
-    .footer-grid{
-      grid-template-columns:1fr;
-    }
-  
-    .nav-links{
-      display:none;
-    }
-  
-    .hero h1{
-      font-size:48px;
-    }
-  }
-  :root{
-    --primary:#2563eb;
-    --primary-dark:#1d4ed8;
-    --secondary:#f59e0b;
-    --dark:#0f172a;
-    --text:#475569;
-    --light:#ffffff;
-    --bg:#f8fafc;
-    --border:#e2e8f0;
-  }
-  
-  *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Poppins',sans-serif;
-  }
-  
-  body{
-    background:var(--bg);
-    color:var(--dark);
-    overflow-x:hidden;
-  }
-  
-  .container{
-    width:90%;
-    max-width:1300px;
-    margin:auto;
-  }
-  .dashboard-section{
-    padding-top:140px;
-    padding-bottom:80px;
+  --primary:#2563eb;
+  --primary-dark:#1d4ed8;
+  --secondary:#f59e0b;
+  --dark:#0f172a;
+  --text:#475569;
+  --light:#ffffff;
+  --bg:#f8fafc;
+  --border:#e2e8f0;
 }
+
+/* =========================
+   GLOBAL RESET (applies to ALL HTML elements)
+========================= */
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
+
+/* =========================
+   <body> TAG
+========================= */
+body{
+  background:var(--bg);
+  color:var(--dark);
+  overflow-x:hidden;
+}
+
+/* =========================
+   MAIN WRAPPER DIV
+   <div class="container">
+========================= */
+.container{
+  width:90%;
+  max-width:1300px;
+  margin:auto;
+}
+
+/* =========================
+   NAVBAR SECTION
+   <nav class="navbar">
+   <div class="nav-container">
+========================= */
+.navbar{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  background:white;
+  z-index:1000;
+  box-shadow:0 2px 20px rgba(0,0,0,.05);
+}
+
+.nav-container{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:18px 0;
+}
+
+/* LOGO AREA */
+.logo{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  text-decoration:none;
+  color:var(--dark);
+  font-size:26px;
+  font-weight:700;
+}
+
+.logo img{
+  width:50px;
+}
+
+.accent{
+  color:var(--secondary);
+}
+
+/* NAV LINKS <ul class="nav-links"> */
+.nav-links{
+  display:flex;
+  gap:30px;
+  list-style:none;
+}
+
+.nav-links a{
+  text-decoration:none;
+  color:var(--dark);
+  font-weight:500;
+}
+
+/* NAV BUTTONS */
+.nav-buttons{
+  display:flex;
+  gap:12px;
+}
+
+/* =========================
+   BUTTONS (USED IN HTML BUTTONS & LINKS)
+========================= */
+.btn-primary,
+.cta-btn,
+.search-btn{
+  background:var(--primary);
+  color:white;
+  border:none;
+  padding:14px 28px;
+  border-radius:12px;
+  font-weight:600;
+  cursor:pointer;
+  text-decoration:none;
+}
+
+.btn-outline{
+  border:2px solid var(--primary);
+  color:var(--primary);
+  padding:12px 24px;
+  border-radius:12px;
+  text-decoration:none;
+  font-weight:600;
+}
+
+.btn-secondary{
+  border:2px solid var(--secondary);
+  color:var(--secondary);
+  padding:14px 28px;
+  border-radius:12px;
+  font-weight:600;
+  text-decoration:none;
+}
+
+/* =========================
+   HERO SECTION
+   <section class="hero">
+========================= */
+.hero{
+  min-height:100vh;
+  padding-top:120px;
+  display:flex;
+  align-items:center;
+  position:relative;
+ 
+}
+
+/* DARK OVERLAY DIV INSIDE HERO */
+.hero-overlay{
+  position:absolute;
+  inset:0;
+  background:rgba(15,23,42,.7);
+}
+
+/* HERO CONTENT WRAPPER */
+.hero-content{
+  position:relative;
+  z-index:2;
+}
+
+.hero-text{
+  max-width:700px;
+}
+
+/* HERO TITLE */
+.hero h1{
+  color:white;
+  font-size:70px;
+  line-height:1.1;
+  margin-bottom:20px;
+}
+
+.hero h1 span{
+  color:var(--secondary);
+}
+
+/* HERO DESCRIPTION */
+.hero p{
+  color:#e2e8f0;
+  line-height:1.8;
+  margin-bottom:30px;
+}
+
+/* HERO BADGE */
+.hero-badge{
+  display:inline-flex;
+  gap:10px;
+  padding:12px 20px;
+  border-radius:50px;
+  background:rgba(255,255,255,.15);
+  color:white;
+  margin-bottom:25px;
+}
+
+/* HERO BUTTON GROUP */
+.hero-buttons{
+  display:flex;
+  gap:15px;
+  margin-bottom:40px;
+}
+
+/* HERO STATS AREA */
+.hero-stats{
+  display:flex;
+  gap:40px;
+}
+
+.stat h3{
+  color:white;
+}
+
+.stat p{
+  color:#cbd5e1;
+}
+
+/* =========================
+   SECTION TITLE COMPONENT
+   <div class="section-title">
+========================= */
+.section-title{
+  text-align:center;
+  margin-bottom:60px;
+}
+
+.section-title h2{
+  font-size:48px;
+  margin-bottom:15px;
+}
+
+/* =========================
+   PAGE SECTIONS SPACING
+   <section class="search-section">
+   <section class="top-tutors">
+   <section class="why-us">
+   <section class="cta">
+========================= */
+.search-section,
+.top-tutors,
+.why-us,
+.cta{
+  padding:100px 0;
+}
+
+/* =========================
+   SEARCH SECTION
+   <div class="search-card">
+========================= */
+.search-card{
+  background:white;
+  border-radius:25px;
+  padding:25px;
+  box-shadow:0 15px 40px rgba(0,0,0,.08);
+  display:grid;
+  grid-template-columns:2fr 1.5fr 1.5fr auto;
+  gap:15px;
+}
+
+.search-field{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  border:1px solid #e2e8f0;
+  border-radius:15px;
+  padding:16px;
+}
+
+.search-field input{
+  width:100%;
+  border:none;
+  outline:none;
+}
+
+/* =========================
+   TUTOR CARDS SECTION
+   <div class="tutors-grid">
+   <div class="tutor-card">
+========================= */
+.tutors-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:30px;
+  align-items:stretch;
+}
+
+.tutor-card{
+  background:white;
+  border-radius:25px;
+  overflow:hidden;
+  box-shadow:0 15px 40px rgba(0,0,0,0.06);
+  display:flex;
+  flex-direction:column;
+  text-align:center;
+  transition:.3s;
+  height:100%;
+}
+
+.tutor-card:hover{
+  transform:translateY(-10px);
+}
+
+.tutor-card img{
+  width:100%;
+  height:280px;
+  object-fit:cover;
+}
+
+.tutor-card h3{
+  margin:15px 0 8px;
+}
+
+.tutor-card p{
+  padding:15px 25px;
+  color:var(--text);
+  line-height:1.7;
+  flex-grow:1;
+}
+
+.tutor-card .btn-primary{
+  margin:20px;
+  margin-top:auto;
+}
+
+/* SUBJECT LABEL INSIDE CARD */
+.subject{
+  color:var(--primary);
+  font-weight:600;
+}
+
+/* =========================
+   FEATURE ICONS
+   <div class="feature-card">
+========================= */
+.feature-card i{
+  font-size:30px;
+  color:var(--primary);
+  margin-bottom:15px;
+}
+
+/* FEATURES (horizontal flex layout) */
+.features-grid{
+  display:flex;
+  flex-direction:row;
+  flex-wrap:nowrap;
+  gap:30px;
+  align-items:stretch;
+  margin-top:20px;
+  overflow-x:auto;
+  padding-bottom:8px;
+  -webkit-overflow-scrolling:touch;
+}
+
+.feature-card{
+  background:white;
+  padding:30px;
+  border-radius:20px;
+  box-shadow:0 10px 30px rgba(0,0,0,.06);
+  text-align:center;
+  flex:0 0 300px;
+  min-width:260px;
+}
+
+@media (max-width:700px){
+  .features-grid{
+    flex-wrap:wrap;
+  }
+  .feature-card{
+    flex:1 1 100%;
+    max-width:100%;
+  }
+}
+
+/* =========================
+   CTA SECTION
+   <div class="cta-box">
+========================= */
+.cta-box{
+  background:linear-gradient(135deg,#2563eb,#1e40af);
+  color:white;
+  text-align:center;
+  border-radius:35px;
+  padding:80px 60px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+
+.cta-btn{
+  margin-top:10px;
+}
+
+/* =========================
+   FOOTER SECTION
+   <footer class="footer">
+========================= */
+.footer{
+  background:#021b50;
+  color:white;
+  padding:80px 0 30px;
+}
+
+.footer-grid{
+  display:grid;
+  grid-template-columns:2fr 1fr 1fr 1fr;
+  gap:40px;
+}
+
+.footer-logo{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:20px;
+}
+
+.footer-logo img{
+  width:50px;
+}
+
+.footer-links{
+  display:flex;
+  flex-direction:column;
+}
+
+.footer-links h3{
+  margin-bottom:20px;
+}
+
+.footer-links a{
+  color:#cbd5e1;
+  text-decoration:none;
+  margin-bottom:10px;
+}
+
+.footer-bottom{
+  text-align:center;
+  margin-top:40px;
+  padding-top:20px;
+  border-top:1px solid rgba(255,255,255,.1);
+}
+
+/* =========================
+   RESPONSIVE DESIGN
+   (Tablet & Mobile)
+========================= */
+@media(max-width:1000px){
+
+  .search-card,
+  .tutors-grid,
+  .features-grid,
+  .footer-grid{
+    grid-template-columns:1fr;
+  }
+
+  .nav-links{
+    display:none;
+  }
+
+  .hero h1{
+    font-size:48px;
+  }
+}
+
+/* =========================
+   DASHBOARD PAGE SECTION
+   <section class="dashboard-section">
+========================= */
+.dashboard-section{
+  padding-top:140px;
+  padding-bottom:80px;
+}
+/* for hero session */
+  
+    .hero{
+    padding:180px 0 100px;
+    background:linear-gradient(
+    rgba(15,23,42,.4),
+    rgba(15,23,42,.4)),
+    url('/tutorlink/assets/images/hero-image.png');
+    background-size:cover;
+    background-position:center;
+    color:white;
+    text-align:center;
+}
+ 

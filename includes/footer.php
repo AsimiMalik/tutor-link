@@ -7,8 +7,8 @@
       <div class="footer-about">
 
         <div class="footer-logo">
-          <img src="assets/images/logo.png" alt="">
-          <h2>Tutor<span>Link</span></h2>
+          <img src="/tutorlink/assets/images/logo.png" alt="">
+          <h2>Brilliance</h2>
         </div>
 
         <p>
@@ -22,9 +22,9 @@
 
         <h3>Platform</h3>
 
-        <a href="auth/login.php">Find Tutors</a>
-        <a href="auth/register.php">Become a Tutor</a>
-        <a href="index.php">Top Tutors</a>
+        <a href="/tutorlink/auth/login.php">Find Tutors</a>
+        <a href="/tutorlink/auth/register.php">Become a Tutor</a>
+        <a href="/tutorlink/index.php">Top Tutors</a>
 
       </div>
 
@@ -32,10 +32,10 @@
 
         <h3>Company</h3>
 
-        <a href="about.php">About Us</a>
-        <a href="contact.php">Contact</a>
-        <a href="support.php">Support</a>
-        <a href="privacy-policy.php">Privacy Policy</a>
+        <a href="/tutorlink/about.php">About Us</a>
+        <a href="/tutorlink/contact.php">Contact</a>
+        <a href="/tutorlink/support.php">Support</a>
+        <a href="/tutorlink/privacy-policy.php">Privacy Policy</a>
 
       </div>
 
@@ -52,7 +52,7 @@
     </div>
 
     <div class="footer-bottom">
-      © 2026 TutorLink. All Rights Reserved.
+      © 2026 Brilliance. All Rights Reserved.
     </div>
 
   </div>

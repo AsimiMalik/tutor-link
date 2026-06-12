@@ -4,6 +4,13 @@ session_start();
 require_once "../classes/Database.php";
 require_once "../classes/User.php";
 require_once "../classes/Validate.php";
+require_once __DIR__ . '/../includes/csrf.php';
+
+if (!isset($_POST['_csrf']) || !verify_csrf($_POST['_csrf'])) {
+    $_SESSION['error'] = 'Invalid CSRF token.';
+    header("Location: ../auth/login.php");
+    exit();
+}
 
 $db = new Database();
 $conn = $db->connect();
@@ -40,17 +47,44 @@ if (isset($_POST['login'])) {
 
     if ($loginUser['role'] === 'tutor') {
 
-        if ((int)$loginUser['profile_completed'] === 0) {
+        // load tutor profile picture into session so it shows immediately
+        $stmtPic = $conn->prepare("SELECT profile_pic FROM tutor_profile WHERE user_id = ?");
+        $stmtPic->execute([$loginUser['id']]);
+        $picRow = $stmtPic->fetch(PDO::FETCH_ASSOC);
+        $_SESSION['profile_pic'] = $picRow['profile_pic'] ?? '';
 
-            header("Location: ../tutor/edit-profile.php");
+        // Determine if tutor has completed their profile by checking tutor_profile
+        $stmtProfile = $conn->prepare("SELECT id FROM tutor_profile WHERE user_id = ? LIMIT 1");
+        $stmtProfile->execute([$loginUser['id']]);
+        $hasProfile = (bool)$stmtProfile->fetch(PDO::FETCH_ASSOC);
+
+        if (!$hasProfile) {
+            // first-time tutor without a profile → send to edit profile to complete it
+            header("Location: ../tutor/tutor-edit-profile.php");
             exit();
         }
 
-        header("Location: ../tutor/ttor-dashboard.php");
+        header("Location: ../tutor/tutor-dashboard.php");
         exit();
     }
 
     if ($loginUser['role'] === 'parent') {
+        // load parent profile picture into session so it shows immediately
+        $stmtPic = $conn->prepare("SELECT profile_pic FROM parent_profile WHERE user_id = ?");
+        $stmtPic->execute([$loginUser['id']]);
+        $picRow = $stmtPic->fetch(PDO::FETCH_ASSOC);
+        $_SESSION['profile_pic'] = $picRow['profile_pic'] ?? '';
+
+        // Determine if parent has completed their profile by checking parent_profile
+        $stmtProfile = $conn->prepare("SELECT id FROM parent_profile WHERE user_id = ? LIMIT 1");
+        $stmtProfile->execute([$loginUser['id']]);
+        $hasProfile = (bool)$stmtProfile->fetch(PDO::FETCH_ASSOC);
+
+        if (!$hasProfile) {
+            // first-time parent without a profile → send to edit profile to complete it
+            header("Location: ../parent/parent-edit-profile.php");
+            exit();
+        }
 
         header("Location: ../parent/parent-dashboard.php");
         exit();

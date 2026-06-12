@@ -20,18 +20,16 @@ $fullname = $_SESSION['fullname'] ?? 'Tutor';
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tutor Dashboard | TutorLink</title>
+<title>Tutor Dashboard | Brilliance</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-<style>
-<?php include '../assets/css/style.css'; ?>
-</style>
+<link rel="stylesheet" href="/tutorlink/assets/css/style.css">
 </head>
 
 <body>
 
-<?php include '../includes/t-navbar.php'; ?>
+<?php include '../includes/tutor-navbar.php'; ?>
 
 <section class="top-tutors">
 
@@ -47,13 +45,13 @@ $fullname = $_SESSION['fullname'] ?? 'Tutor';
 <div class="tutor-card">
 <h3>My Profile</h3>
 <p>Update your subjects, experience, and availability.</p>
-<a href="#" class="btn-primary">Edit Profile</a>
+<a href="/tutorlink/tutor/tutor-edit-profile.php" class="btn-primary">Edit Profile</a>
 </div>
 
 <div class="tutor-card">
 <h3>My Students</h3>
 <p>View students who booked your lessons.</p>
-<a href="#" class="btn-primary">View Students</a>
+<a href="/tutorlink/tutor/tutor-bookings.php" class="btn-primary">View Students</a>
 </div>
 
 <div class="tutor-card">

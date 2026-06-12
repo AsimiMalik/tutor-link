@@ -4,14 +4,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Support | TutorLink</title>
+<title>Support | Brilliance</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/styles.css">
-
-<style>
-<?php include 'assets/css/style.css'; ?>
-</style>
+<link rel="stylesheet" href="/tutorlink/assets/css/style.css">
 </head>
 
 <body>
@@ -31,7 +27,7 @@
 
 <div class="feature-card">
 <h3>📩 Email Support</h3>
-<p>support@tutorlink.com</p>
+<p>support@brilliance.com</p>
 </div>
 
 <div class="feature-card">

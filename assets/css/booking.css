@@ -1,0 +1,117 @@
+/* ===============================
+   GLOBAL PAGE STYLE
+================================ */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background: #f4f6f9;
+}
+
+/* ===============================
+   CENTER CONTAINER
+================================ */
+.booking-container {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+/* ===============================
+   BOOKING CARD
+================================ */
+.booking-card {
+    background: #ffffff;
+    width: 100%;
+    max-width: 420px;
+    padding: 30px;
+    border-radius: 14px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+/* ===============================
+   HEADER TEXT
+================================ */
+.booking-card h2 {
+    margin: 0;
+    font-size: 24px;
+    color: #333;
+    text-align: center;
+}
+
+.subtitle {
+    text-align: center;
+    font-size: 13px;
+    color: #777;
+    margin-top: 5px;
+    margin-bottom: 25px;
+}
+
+/* ===============================
+   FORM GROUP
+================================ */
+.form-group {
+    margin-bottom: 18px;
+}
+
+label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 6px;
+    color: #444;
+}
+
+/* ===============================
+   INPUTS & SELECT
+================================ */
+select,
+input {
+    width: 100%;
+    padding: 11px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+    transition: 0.3s;
+}
+
+select:focus,
+input:focus {
+    border-color: #4a6cf7;
+    box-shadow: 0 0 5px rgba(74, 108, 247, 0.2);
+}
+
+/* ===============================
+   BUTTON
+================================ */
+.btn {
+    width: 100%;
+    padding: 12px;
+    background: #4a6cf7;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: 0.3s;
+    margin-top: 10px;
+}
+
+.btn:hover {
+    background: #3a57d0;
+}
+
+/* ===============================
+   RESPONSIVE DESIGN
+================================ */
+@media (max-width: 500px) {
+    .booking-card {
+        padding: 20px;
+    }
+
+    .booking-card h2 {
+        font-size: 20px;
+    }
+}

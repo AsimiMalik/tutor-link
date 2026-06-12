@@ -1,17 +1,16 @@
 <?php
 session_start();
+require_once __DIR__ . '/../includes/csrf.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Register | TutorLink</title>
+<title>Register | Brilliance</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-<style>
-<?php include '../assets/css/auth.css'; ?>
-</style>
+<link rel="stylesheet" href="/tutorlink/assets/css/auth.css">
 
 </head>
 
@@ -24,7 +23,7 @@ session_start();
 
 <div class="auth-header">
 <h1 class="auth-title">Create Account</h1>
-<p class="auth-subtitle">Join TutorLink as a Tutor or Parent</p>
+<p class="auth-subtitle">Join Brilliance as a Tutor or Parent</p>
 </div>
 
 <?php if(isset($_SESSION['success'])): ?>
@@ -50,6 +49,7 @@ session_start();
 <form id="tutorForm" class="auth-card" method="POST" action="../processes/register-processes.php">
 
 <input type="hidden" name="role" value="tutor">
+  <?php echo csrf_field(); ?>
 
 <div class="form-grid">
 
@@ -82,6 +82,7 @@ session_start();
 <form id="parentForm" class="auth-card hidden" method="POST" action="../processes/register-processes.php">
 
 <input type="hidden" name="role" value="parent">
+  <?php echo csrf_field(); ?>
 
 <div class="form-grid">
 

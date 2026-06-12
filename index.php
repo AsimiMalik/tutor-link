@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TutorLink | Connecting Parents With Trusted Tutors</title>
+  <title>Brilliance | Connecting Parents With Trusted Tutors</title>
 
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,18 +12,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="stylesheet" href="assets/css/style.css">
 
-  <style>
-<?php
-
-include 'assets/css/style.css';
-
-
-?>
-
-
-  </style>
 </head>
 <body>
 
@@ -48,7 +38,7 @@ include 'includes/navbar.php';?>
       </h1>
 
       <p>
-        TutorLink helps parents discover verified lesson teachers,
+        Brilliance helps parents discover verified lesson teachers,
         compare tutor profiles, book sessions, and support better
         academic performance for students.
       </p>
@@ -224,7 +214,7 @@ include 'includes/navbar.php';?>
   <div class="container">
 
     <div class="section-title">
-      <h2>Why Parents Choose TutorLink</h2>
+      <h2>Why Parents Choose Brilliance</h2>
 
       <p>
         A safer and smarter way to find educational support.
@@ -300,12 +290,12 @@ include 'includes/navbar.php';?>
       </h2>
 
       <p>
-        Join TutorLink and connect with trusted tutors
+        Join Brilliance and connect with trusted tutors
         who can help students achieve their goals.
       </p>
 
       <a href="auth/register.php" class="cta-btn">
-        Join TutorLink
+        Join Brilliance
       </a>
 
     </div>

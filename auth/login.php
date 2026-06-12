@@ -1,17 +1,16 @@
 <?php
 session_start();
+require_once __DIR__ . '/../includes/csrf.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Login | TutorLink</title>
+<title>Login | Brilliance</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-<style>
-<?php include '../assets/css/auth.css'; ?>
-</style>
+<link rel="stylesheet" href="/tutorlink/assets/css/auth.css">
 
 </head>
 
@@ -38,6 +37,8 @@ session_start();
 <div class="auth-card">
 
 <form method="POST" action="../processes/login-processes.php">
+
+  <?php echo csrf_field(); ?>
 
 <div class="input-group">
 <label>Email</label>

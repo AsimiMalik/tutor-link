@@ -74,7 +74,7 @@ body{
 }
 
 .role-card.active{
-    border-color:var(--primary);
+    border-color:var(--secondary);
 }
 
 .role-card i{
@@ -128,7 +128,7 @@ body{
     width:100%;
     margin-top:20px;
     padding:14px;
-    border:none;
+    border: 1px solid #f7b267;
     border-radius:12px;
     background:var(--primary);
     color:white;

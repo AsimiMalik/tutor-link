@@ -314,7 +314,7 @@
       display:flex;
       align-items:center;
       position:relative;
-      background:url('assets/images/hero-image.png') center/cover;
+      background:url('../images/hero-image.png') center/cover;
     }
     
     .hero-overlay{

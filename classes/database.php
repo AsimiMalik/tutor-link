@@ -2,7 +2,7 @@
 
 class Database {
     private $host = "localhost";
-    private $db_name = "tutorlink";
+    private $db_name = "brilliance";
     private $username = "root";
     private $password = "";
     public $conn;

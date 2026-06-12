@@ -1,7 +1,7 @@
 <?php
 return [
     "host" => "localhost",
-    "dbname" => "tutorlink",
+    "dbname" => "brilliance",
     "username" => "root",
     "password" => "",
     "charset" => "utf8mb4"

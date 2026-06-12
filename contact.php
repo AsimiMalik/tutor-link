@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Contact Us | TutorLink</title>
+<title>Contact Us | Brilliance</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -23,7 +23,7 @@ background:#f8fafc;
     background:linear-gradient(
     rgba(15,23,42,.8),
     rgba(15,23,42,.8)),
-    url('assets/images/hero-image.png');
+    url('/tutorlink/assets/images/hero-image.png');
     background-size:cover;
     background-position:center;
     color:white;
@@ -513,7 +513,7 @@ body{
 
 <div class="container">
 
-<h1>Contact TutorLink</h1>
+<h1>Contact Brilliance</h1>
 
 <p>
 We'd love to hear from you. Reach out for support, inquiries or partnership opportunities.
@@ -538,7 +538,7 @@ We'd love to hear from you. Reach out for support, inquiries or partnership oppo
 <div class="contact-card">
 <i class="fas fa-envelope"></i>
 <h3>Email</h3>
-<p>hello@tutorlink.com</p>
+<p>hello@brilliance.com</p>
 </div>
 
 <div class="contact-card">

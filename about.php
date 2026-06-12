@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>About Us | TutorLink</title>
+<title>About Us | Brilliance</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -551,7 +551,7 @@ body{
 
 <div class="container">
 
-<h1>About TutorLink</h1>
+<h1>About Brilliance</h1>
 
 <p>
 Connecting Nigerian parents with trusted tutors and helping students achieve academic excellence through quality education.
@@ -572,7 +572,7 @@ Connecting Nigerian parents with trusted tutors and helping students achieve aca
 <h2>Our Story</h2>
 
 <p>
-TutorLink was founded to solve the challenge many parents face when searching for reliable tutors. We provide a trusted platform where parents can easily discover qualified educators, compare profiles, and make informed decisions.
+Brilliance was founded to solve the challenge many parents face when searching for reliable tutors. We provide a trusted platform where parents can easily discover qualified educators, compare profiles, and make informed decisions.
 </p>
 
 </div>
@@ -651,7 +651,7 @@ TutorLink was founded to solve the challenge many parents face when searching fo
 
 <h2>Ready To Find The Perfect Tutor?</h2>
 
-<p>Join TutorLink today and connect with trusted educators.</p>
+<p>Join Brilliance today and connect with trusted educators.</p>
 
 <a href="auth/register.php" class="cta-btn">Get Started</a>
 

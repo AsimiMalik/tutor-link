@@ -1,0 +1,230 @@
+<?php
+session_start();
+
+// Temporary debug helpers — remove or disable in production
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+/*
+----------------------------------------------------
+CHECK LOGIN
+----------------------------------------------------
+*/
+if (!isset($_SESSION['user_id'])) {
+    header("Location: ../auth/login.php");
+    exit();
+}
+
+require_once __DIR__ . '/../includes/csrf.php';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!isset($_POST['_csrf']) || !verify_csrf($_POST['_csrf'])) {
+        $_SESSION['error'] = 'Invalid CSRF token.';
+        header('Location: ../tutor/tutor-edit-profile.php');
+        exit();
+    }
+}
+
+/*
+----------------------------------------------------
+CHECK ROLE
+----------------------------------------------------
+*/
+if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'tutor') {
+    header("Location: ../auth/login.php");
+    exit();
+}
+
+/*
+----------------------------------------------------
+CONNECT DATABASE
+----------------------------------------------------
+*/
+require_once "../classes/database.php";
+
+$db = new Database();
+$conn = $db->connect();
+
+/*
+----------------------------------------------------
+GET USER ID
+----------------------------------------------------
+*/
+$user_id = $_SESSION['user_id'];
+
+/*
+----------------------------------------------------
+COLLECT FORM DATA
+----------------------------------------------------
+*/
+$bio = $_POST['bio'] ?? '';
+$experience = $_POST['experience'] ?? '';
+$location = $_POST['location'] ?? '';
+$hourly_rate = $_POST['hourly_rate'] ?? 0;
+// subjects array from form
+$subjects_input = $_POST['subjects'] ?? [];
+// qualification
+$qualification = $_POST['qualification'] ?? '';
+
+/*
+----------------------------------------------------
+HANDLE PROFILE IMAGE UPLOAD
+----------------------------------------------------
+*/
+$profile_pic_name = null;
+
+if (isset($_FILES['profile_pic']) && $_FILES['profile_pic']['error'] == 0) {
+
+    $file = $_FILES['profile_pic'];
+
+    $file_name = time() . "_" . basename($file['name']);
+    // use absolute path to avoid relative path issues
+    $target_dir = __DIR__ . '/../uploads/';
+
+    // ensure uploads directory exists
+    if (!is_dir($target_dir)) {
+        mkdir($target_dir, 0755, true);
+    }
+
+    $target_file = $target_dir . $file_name;
+
+    // move uploaded file
+    if (move_uploaded_file($file['tmp_name'], $target_file)) {
+        $profile_pic_name = $file_name;
+    } else {
+        $_SESSION['error'] = 'Unable to save uploaded file.';
+    }
+}
+
+/*
+----------------------------------------------------
+CHECK IF PROFILE EXISTS
+----------------------------------------------------
+*/
+$stmt = $conn->prepare("SELECT id FROM tutor_profile WHERE user_id = ?");
+$stmt->execute([$user_id]);
+$exists = $stmt->fetch();
+
+/*
+----------------------------------------------------
+IF PROFILE EXISTS → UPDATE
+----------------------------------------------------
+*/
+if ($exists) {
+
+    if ($profile_pic_name) {
+        $stmt = $conn->prepare(""
+            . "UPDATE tutor_profile \n"
+            . "SET bio = ?, qualification = ?, experience = ?, location = ?, hourly_rate = ?, profile_pic = ?\n"
+            . "WHERE user_id = ?"
+        );
+
+        $stmt->execute([
+            $bio,
+            $qualification,
+            $experience,
+            $location,
+            $hourly_rate,
+            $profile_pic_name,
+            $user_id
+        ]);
+
+    } else {
+        $stmt = $conn->prepare(""
+            . "UPDATE tutor_profile \n"
+            . "SET bio = ?, qualification = ?, experience = ?, location = ?, hourly_rate = ?\n"
+            . "WHERE user_id = ?"
+        );
+
+        $stmt->execute([
+            $bio,
+            $qualification,
+            $experience,
+            $location,
+            $hourly_rate,
+            $user_id
+        ]);
+    }
+
+}
+
+/*
+----------------------------------------------------
+IF PROFILE DOES NOT EXIST → INSERT
+----------------------------------------------------
+*/
+else {
+
+    $stmt = $conn->prepare(""
+        . "INSERT INTO tutor_profile \n"
+        . "(user_id, bio, qualification, experience, location, hourly_rate, profile_pic)\n"
+        . "VALUES (?, ?, ?, ?, ?, ?, ?)"
+    );
+
+    $stmt->execute([
+        $user_id,
+        $bio,
+        $qualification,
+        $experience,
+        $location,
+        $hourly_rate,
+        $profile_pic_name
+    ]);
+}
+
+// save tutor subjects assignments (if table exists)
+try {
+    if (!is_array($subjects_input)) $subjects_input = [];
+    // sanitize ints
+    $subject_ids = array_filter(array_map(function($v){return (int)$v;}, $subjects_input));
+    // use TutorSubject class if available
+    if (file_exists(__DIR__ . '/../classes/TutorSubject.php')) {
+        require_once __DIR__ . '/../classes/TutorSubject.php';
+        $ts = new TutorSubject($conn);
+        $ts->assignSubjects($user_id, $subject_ids);
+    } else {
+        // fallback: direct DB operations
+        $conn->beginTransaction();
+        $del = $conn->prepare("DELETE FROM tutor_subjects WHERE tutor_id = ?");
+        $del->execute([$user_id]);
+        if (!empty($subject_ids)) {
+            $ins = $conn->prepare("INSERT INTO tutor_subjects (tutor_id, subject_id) VALUES (?, ?)");
+            foreach ($subject_ids as $sid) {
+                if ($sid <= 0) continue;
+                $ins->execute([$user_id, $sid]);
+            }
+        }
+        $conn->commit();
+    }
+} catch (PDOException $e) {
+    // silently continue; optional: log or set flash
+}
+
+// mark user's profile as completed in users table (if column exists)
+try {
+    $stmt = $conn->prepare("UPDATE users SET profile_completed = 1 WHERE id = ?");
+    $stmt->execute([$user_id]);
+} catch (PDOException $e) {
+    // likely the `profile_completed` column doesn't exist in users table — ignore silently
+}
+// refresh session profile_pic so the new image becomes the default immediately
+if (!empty($profile_pic_name)) {
+    $_SESSION['profile_pic'] = $profile_pic_name;
+} else {
+    $stmt = $conn->prepare("SELECT profile_pic FROM tutor_profile WHERE user_id = ?");
+    $stmt->execute([$user_id]);
+    $r = $stmt->fetch(PDO::FETCH_ASSOC);
+    $_SESSION['profile_pic'] = $r['profile_pic'] ?? '';
+}
+
+// refresh session profile_pic so the new image becomes the default immediately
+if (!empty($profile_pic_name)) {
+    $_SESSION['profile_pic'] = $profile_pic_name;
+}
+
+$_SESSION['success'] = 'Profile updated successfully.';
+// redirect to tutor profile page after completing profile (so navbar is visible)
+header("Location: /tutorlink/tutor/tutor-profile.php");
+exit();
+?>
