@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
 	<meta charset="utf-8">
 	<title>Edit Booking #<?= htmlspecialchars($b['id']) ?></title>
-	<link rel="stylesheet" href="/tutorlink/assets/css/style.css">
+	<link rel="stylesheet" href="/brilliance/assets/css/style.css">
 	<style>.page{max-width:800px;margin:90px auto;padding:20px}.form-group{margin-bottom:12px}</style>
 </head>
 <body>

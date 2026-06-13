@@ -24,7 +24,7 @@ $fullname = $_SESSION['fullname'] ?? 'Parent';
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-<link rel="stylesheet" href="/tutorlink/assets/css/style.css">
+<link rel="stylesheet" href="/brilliance/assets/css/style.css">
 </head>
 
 <body>
@@ -45,13 +45,13 @@ $fullname = $_SESSION['fullname'] ?? 'Parent';
 <div class="tutor-card">
 <h3>Find Tutors</h3>
 <p>Search for qualified tutors near you.</p>
-<a href="/tutorlink/view-tutors.php" class="btn-primary">Search</a>
+<a href="/brilliance/view-tutors.php" class="btn-primary">Search</a>
 </div>
 
 <div class="tutor-card">
 <h3>My Bookings</h3>
 <p>View your booked lessons and schedules.</p>
-<a href="/tutorlink/parent/parent-bookings.php" class="btn-primary">View Bookings</a>
+<a href="/brilliance/parent/parent-bookings.php" class="btn-primary">View Bookings</a>
 </div>
 
 <div class="tutor-card">
@@ -63,7 +63,7 @@ $fullname = $_SESSION['fullname'] ?? 'Parent';
 <div class="tutor-card">
 <h3>Profile</h3>
 <p>View or edit your parent profile.</p>
-<a href="/tutorlink/parent/parent-profile.php" class="btn-primary">My Profile</a>
+<a href="/brilliance/parent/parent-profile.php" class="btn-primary">My Profile</a>
 </div>
 
 </div>

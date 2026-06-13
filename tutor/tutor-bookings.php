@@ -23,7 +23,7 @@ $bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <html>
 <head>
     <title>My Students / Bookings | Brilliance</title>
-    <link rel="stylesheet" href="/tutorlink/assets/css/style.css">
+    <link rel="stylesheet" href="/brilliance/assets/css/style.css">
     <style>
         .page-container{max-width:900px;margin:40px auto;margin-top:120px}
         .card{background:#fff;padding:16px;border-radius:10px;margin-bottom:12px;box-shadow:0 6px 18px rgba(0,0,0,0.06)}

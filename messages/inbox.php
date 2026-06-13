@@ -10,7 +10,7 @@ $sent = $msg->getSent($_SESSION['user_id']);
 <!doctype html>
 <html>
 <head><meta charset="utf-8"><title>Messages</title>
-<link rel="stylesheet" href="/tutorlink/assets/css/style.css">
+<link rel="stylesheet" href="/brilliance/assets/css/style.css">
 </head>
 <body>
 <?php include __DIR__ . '/../includes/navbar.php'; ?>

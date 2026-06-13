@@ -19,8 +19,8 @@ $stmt->execute();
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Find Tutors | Brilliance</title>
-<link rel="stylesheet" href="/tutorlink/assets/css/style.css">
-<link rel="stylesheet" href="/tutorlink/assets/css/tutors.css">
+<link rel="stylesheet" href="/brilliance/assets/css/style.css">
+<link rel="stylesheet" href="/brilliance/assets/css/tutors.css">
 </head>
 <body>
 <?php include __DIR__ . '/../includes/navbar.php'; ?>
@@ -36,9 +36,9 @@ $stmt->execute();
       <?php foreach($tutors as $t): ?>
         <div class="tutor-card">
           <?php if(!empty($t['profile_pic'])): ?>
-            <img src="/tutorlink/uploads/<?php echo htmlspecialchars($t['profile_pic']); ?>" alt="<?php echo htmlspecialchars($t['fullname']); ?>">
+            <img src="/brilliance/uploads/<?php echo htmlspecialchars($t['profile_pic']); ?>" alt="<?php echo htmlspecialchars($t['fullname']); ?>">
           <?php else: ?>
-            <img src="/tutorlink/assets/images/logo.png" alt="No image">
+            <img src="/brilliance/assets/images/logo.png" alt="No image">
           <?php endif; ?>
 
           <h3><?php echo htmlspecialchars($t['fullname'] ?? 'Tutor'); ?></h3>
@@ -50,7 +50,7 @@ $stmt->execute();
           </div>
 
           <div class="card-actions">
-            <a class="btn" href="/tutorlink/tutor/view-tutor.php?id=<?php echo urlencode($t['id']); ?>">View Profile</a>
+            <a class="btn" href="/brilliance/tutor/view-tutor.php?id=<?php echo urlencode($t['id']); ?>">View Profile</a>
           </div>
         </div>
       <?php endforeach; ?>

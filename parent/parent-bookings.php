@@ -58,7 +58,7 @@ $bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <head>
     <title>My Bookings | Brilliance</title>
 
-    <link rel="stylesheet" href="/tutorlink/assets/css/style.css">
+    <link rel="stylesheet" href="/brilliance/assets/css/style.css">
 
     <style>
         /* PAGE STYLE */

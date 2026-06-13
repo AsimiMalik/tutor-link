@@ -160,5 +160,5 @@ if (!empty($profile_pic_name)) {
 }
 
 $_SESSION['success'] = 'Profile updated successfully.';
-header('Location: /tutorlink/parent/parent-profile.php');
+header('Location: /brilliance/parent/parent-profile.php');
 exit();

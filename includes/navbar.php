@@ -11,22 +11,22 @@
 
 <div class="container nav-container">
 
-  <a href="/tutorlink/index.php" class="logo">
-    <img src="/tutorlink/assets/images/logo.png" alt="Brilliance Logo">
+  <a href="/brilliance/index.php" class="logo">
+    <img src="/brilliance/assets/images/logo.png" alt="Brilliance Logo">
     <span>Brilliance</span>
   </a>
 
   <ul class="nav-links">
-    <li><a href="/tutorlink/index.php">Home</a></li>
-    <li><a href="/tutorlink/auth/login.php">Find Tutors</a></li>
-    <li><a href="/tutorlink/auth/register.php">Become a Tutor</a></li>
-    <li><a href="/tutorlink/about.php">About</a></li>
-    <li><a href="/tutorlink/contact.php">Contact</a></li>
+    <li><a href="/brilliance/index.php">Home</a></li>
+    <li><a href="/brilliance/auth/login.php">Find Tutors</a></li>
+    <li><a href="/brilliance/auth/register.php">Become a Tutor</a></li>
+    <li><a href="/brilliance/about.php">About</a></li>
+    <li><a href="/brilliance/contact.php">Contact</a></li>
   </ul>
 
   <div class="nav-buttons">
-    <a href="/tutorlink/auth/login.php" class="btn-outline">Login</a>
-    <a href="/tutorlink/auth/register.php" class="btn-primary">Get Started</a>
+    <a href="/brilliance/auth/login.php" class="btn-outline">Login</a>
+    <a href="/brilliance/auth/register.php" class="btn-primary">Get Started</a>
   </div>
 
 </div>

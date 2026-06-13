@@ -28,8 +28,8 @@ if (!$data) {
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title><?php echo htmlspecialchars($data['fullname']); ?> — Tutor | Brilliance</title>
-<link rel="stylesheet" href="/tutorlink/assets/css/style.css">
-<link rel="stylesheet" href="/tutorlink/assets/css/tutor-profile.css">
+<link rel="stylesheet" href="/brilliance/assets/css/style.css">
+<link rel="stylesheet" href="/brilliance/assets/css/tutor-profile.css">
 </head>
 <body>
 <?php include __DIR__ . '/../includes/navbar.php'; ?>
@@ -39,7 +39,7 @@ if (!$data) {
         <div class="profile-header">
             <div class="profile-img">
                 <?php if(!empty($data['profile_pic'])): ?>
-                    <img src="/tutorlink/uploads/<?php echo htmlspecialchars($data['profile_pic']); ?>" alt="Profile" class="profile-avatar-large">
+                    <img src="/brilliance/uploads/<?php echo htmlspecialchars($data['profile_pic']); ?>" alt="Profile" class="profile-avatar-large">
                 <?php else: ?>
                     <div class="no-img">No Image</div>
                 <?php endif; ?>
@@ -56,8 +56,8 @@ if (!$data) {
                 ?>
                 <p class="rating">⭐ <?php echo $avg_display; ?> (<?php echo $total_reviews; ?> reviews)</p>
                 <div class="action-buttons">
-                    <a href="/tutorlink/bookings/book-tutor.php?tutor_id=<?php echo $id; ?>" class="btn">Book Tutor</a>
-                    <a href="/tutorlink/messages/compose.php?to=<?php echo $id; ?>" class="btn">Message</a>
+                    <a href="/brilliance/bookings/book-tutor.php?tutor_id=<?php echo $id; ?>" class="btn">Book Tutor</a>
+                    <a href="/brilliance/messages/compose.php?to=<?php echo $id; ?>" class="btn">Message</a>
                     <?php if (isset($_SESSION['user_id'])):
                         // show review button only to parents
                         $show_review_btn = false;
@@ -68,7 +68,7 @@ if (!$data) {
                             if ($r && ($r['role'] ?? '') === 'parent') $show_review_btn = true;
                         }
                         if ($show_review_btn): ?>
-                        <a href="/tutorlink/reviews/submit_review.php?tutor_id=<?php echo $id; ?>" class="btn">Leave Review</a>
+                        <a href="/brilliance/reviews/submit_review.php?tutor_id=<?php echo $id; ?>" class="btn">Leave Review</a>
                     <?php endif; endif; ?>
                 </div>
             </div>
@@ -80,8 +80,8 @@ if (!$data) {
                 </div>
 
                 <div class="stat">
-                    <h4><a href="/tutorlink/reviews/view_reviews.php?tutor_id=<?php echo $id; ?>"><?php echo $total_reviews; ?></a></h4>
-                    <p><a href="/tutorlink/reviews/view_reviews.php?tutor_id=<?php echo $id; ?>">Reviews</a></p>
+                    <h4><a href="/brilliance/reviews/view_reviews.php?tutor_id=<?php echo $id; ?>"><?php echo $total_reviews; ?></a></h4>
+                    <p><a href="/brilliance/reviews/view_reviews.php?tutor_id=<?php echo $id; ?>">Reviews</a></p>
                 </div>
 
                 <div class="stat">
@@ -104,7 +104,7 @@ if (!$data) {
                     $reviews = $reviewObj->getForUser($id);
                     if (empty($reviews)):
                     ?>
-                        <p>No reviews yet. Be the first to <a href="/tutorlink/reviews/submit_review.php?tutor_id=<?php echo $id; ?>">leave a review</a>.</p>
+                        <p>No reviews yet. Be the first to <a href="/brilliance/reviews/submit_review.php?tutor_id=<?php echo $id; ?>">leave a review</a>.</p>
                     <?php else: ?>
                         <?php $count = 0; foreach($reviews as $r): if ($count++ >= 5) break; ?>
                             <div style="border:1px solid #eee;padding:12px;border-radius:6px;margin-bottom:10px">
@@ -115,7 +115,7 @@ if (!$data) {
                                 <div class="muted" style="margin-top:8px"><?php echo htmlspecialchars($r['created_at']); ?></div>
                             </div>
                         <?php endforeach; ?>
-                        <p><a href="/tutorlink/reviews/view_reviews.php?tutor_id=<?php echo $id; ?>">View all reviews</a></p>
+                        <p><a href="/brilliance/reviews/view_reviews.php?tutor_id=<?php echo $id; ?>">View all reviews</a></p>
                     <?php endif; ?>
                 </div>
             </div>

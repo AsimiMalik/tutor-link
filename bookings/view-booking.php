@@ -30,7 +30,7 @@ if (!$b) {
 <head>
     <meta charset="utf-8">
     <title>Booking #<?= htmlspecialchars($b['id']) ?> | Brilliance</title>
-    <link rel="stylesheet" href="/tutorlink/assets/css/style.css">
+    <link rel="stylesheet" href="/brilliance/assets/css/style.css">
     <style>
         .page{max-width:900px;margin:90px auto;padding:20px}
         .card{background:#fff;padding:18px;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,0.06)}

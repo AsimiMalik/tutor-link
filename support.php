@@ -7,7 +7,7 @@
 <title>Support | Brilliance</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/tutorlink/assets/css/style.css">
+<link rel="stylesheet" href="/brilliance/assets/css/style.css">
 </head>
 
 <body>

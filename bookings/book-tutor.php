@@ -56,8 +56,8 @@ if ($prefill_session_date) {
     <meta charset="UTF-8">
     <title>Book Tutor | Brilliance</title>
 
-    <link rel="stylesheet" href="/tutorlink/assets/css/booking.css">
-    <link rel="stylesheet" href="/tutorlink/assets/css/style.css">
+    <link rel="stylesheet" href="/brilliance/assets/css/booking.css">
+    <link rel="stylesheet" href="/brilliance/assets/css/style.css">
 </head>
 
 <body>

@@ -2,14 +2,14 @@
 require_once __DIR__ . '/../processes/parent-edit-profile-processes.php';
 require_once __DIR__ . '/../includes/csrf.php';
 ?>
-// intentionally do not include the navbar on edit profile pages
+<!-- intentionally do not include the navbar on edit profile pages -->
 
 <!DOCTYPE html>
 <html>
 <head>
     <title>Edit Profile</title>
 
-    <link rel="stylesheet" href="/tutorlink/assets/css/tutor-edit-profile.css">
+    <link rel="stylesheet" href="/brilliance/assets/css/tutor-edit-profile.css">
 </head>
 
 <body>

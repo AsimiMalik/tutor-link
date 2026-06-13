@@ -7,7 +7,7 @@
       <div class="footer-about">
 
         <div class="footer-logo">
-          <img src="/tutorlink/assets/images/logo.png" alt="">
+          <img src="/brilliance/assets/images/logo.png" alt="">
           <h2>Brilliance</h2>
         </div>
 
@@ -22,9 +22,9 @@
 
         <h3>Platform</h3>
 
-        <a href="/tutorlink/auth/login.php">Find Tutors</a>
-        <a href="/tutorlink/auth/register.php">Become a Tutor</a>
-        <a href="/tutorlink/index.php">Top Tutors</a>
+        <a href="/brilliance/auth/login.php">Find Tutors</a>
+        <a href="/brilliance/auth/register.php">Become a Tutor</a>
+        <a href="/brilliance/index.php">Top Tutors</a>
 
       </div>
 
@@ -32,10 +32,10 @@
 
         <h3>Company</h3>
 
-        <a href="/tutorlink/about.php">About Us</a>
-        <a href="/tutorlink/contact.php">Contact</a>
-        <a href="/tutorlink/support.php">Support</a>
-        <a href="/tutorlink/privacy-policy.php">Privacy Policy</a>
+        <a href="/brilliance/about.php">About Us</a>
+        <a href="/brilliance/contact.php">Contact</a>
+        <a href="/brilliance/support.php">Support</a>
+        <a href="/brilliance/privacy-policy.php">Privacy Policy</a>
 
       </div>
 

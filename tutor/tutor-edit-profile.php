@@ -13,7 +13,7 @@ require_once __DIR__ . '/../includes/csrf.php';
 <head>
     <title>Edit Profile</title>
 
-    <link rel="stylesheet" href="/tutorlink/assets/css/tutor-edit-profile.css">
+    <link rel="stylesheet" href="/brilliance/assets/css/tutor-edit-profile.css">
 </head>
 
 <body>

@@ -23,7 +23,7 @@ background:#f8fafc;
     background:linear-gradient(
     rgba(15,23,42,.8),
     rgba(15,23,42,.8)),
-    url('/tutorlink/assets/images/hero-image.png');
+    url('/brilliance/assets/images/hero-image.png');
     background-size:cover;
     background-position:center;
     color:white;

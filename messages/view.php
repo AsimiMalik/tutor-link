@@ -13,7 +13,7 @@ if ($m['receiver_id'] == $_SESSION['user_id']) $msg->markRead($id,$_SESSION['use
 <!doctype html>
 <html>
 <head><meta charset="utf-8"><title>View Message</title>
-<link rel="stylesheet" href="/tutorlink/assets/css/style.css">
+<link rel="stylesheet" href="/brilliance/assets/css/style.css">
 </head>
 <body>
 <?php include __DIR__ . '/../includes/navbar.php'; ?>

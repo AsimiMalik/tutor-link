@@ -225,6 +225,6 @@ if (!empty($profile_pic_name)) {
 
 $_SESSION['success'] = 'Profile updated successfully.';
 // redirect to tutor profile page after completing profile (so navbar is visible)
-header("Location: /tutorlink/tutor/tutor-profile.php");
+header("Location: /brilliance/tutor/tutor-profile.php");
 exit();
 ?>
