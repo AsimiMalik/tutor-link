@@ -36,4 +36,14 @@ class Message {
         $stmt->execute([$id,$user_id]);
         return $stmt->rowCount() > 0;
     }
+
+    // expose PDO error info in a safe way for callers
+    public function getErrorInfo(){
+        if (!$this->conn) return null;
+        try {
+            return $this->conn->errorInfo();
+        } catch (Exception $e) {
+            return null;
+        }
+    }
 }

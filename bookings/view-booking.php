@@ -17,7 +17,7 @@ if (!$booking_id) {
     die('Booking not specified');
 }
 
-$stmt = $conn->prepare("SELECT b.*, u.fullname AS tutor_name, tp.profile_pic AS tutor_pic, p.fullname AS parent_name, s.name AS subject_name FROM bookings b JOIN users u ON b.tutor_id = u.id LEFT JOIN tutor_profile tp ON u.id = tp.user_id JOIN users p ON b.parent_id = p.id JOIN subjects s ON b.subject_id = s.id WHERE b.id = ? LIMIT 1");
+$stmt = $conn->prepare("SELECT b.*, u.fullname AS tutor_name, tp.profile_pic AS tutor_pic, p.fullname AS parent_name, pp.profile_pic AS parent_pic, pp.bio AS parent_bio, s.name AS subject_name FROM bookings b JOIN users u ON b.tutor_id = u.id LEFT JOIN tutor_profile tp ON u.id = tp.user_id JOIN users p ON b.parent_id = p.id LEFT JOIN parent_profile pp ON p.id = pp.user_id JOIN subjects s ON b.subject_id = s.id WHERE b.id = ? LIMIT 1");
 $stmt->execute([$booking_id]);
 $b = $stmt->fetch(PDO::FETCH_ASSOC);
 if (!$b) {
@@ -63,8 +63,35 @@ if (isset($_SESSION['role'])) {
         <p class="muted">Booking ID: <?= htmlspecialchars($b['id']) ?></p>
 
         <h3>Subject: <?= htmlspecialchars($b['subject_name']) ?></h3>
-        <p><b>Tutor:</b> <?= htmlspecialchars($b['tutor_name']) ?></p>
-        <p><b>Parent:</b> <?= htmlspecialchars($b['parent_name']) ?></p>
+        <div style="display:flex;gap:18px;flex-wrap:wrap;margin-top:12px">
+            <div style="flex:1;min-width:220px;max-width:420px;background:#f9fbff;padding:12px;border-radius:10px;display:flex;gap:12px;align-items:center">
+                <div style="width:84px;height:84px;border-radius:50%;overflow:hidden;flex-shrink:0;background:#fff">
+                    <?php if(!empty($b['tutor_pic'])): ?>
+                        <img src="/brilliance/uploads/<?php echo htmlspecialchars($b['tutor_pic']); ?>" alt="Tutor" style="width:100%;height:100%;object-fit:cover">
+                    <?php else: ?>
+                        <img src="/brilliance/assets/images/default-avatar.png" alt="Tutor" style="width:100%;height:100%;object-fit:cover">
+                    <?php endif; ?>
+                </div>
+                <div>
+                    <div style="font-weight:700">Tutor: <a href="/brilliance/tutor/view-tutor.php?id=<?= $b['tutor_id'] ?>"><?= htmlspecialchars($b['tutor_name']) ?></a></div>
+                    <?php if(!empty($b['hourly_rate'])): ?><div class="muted">Rate: <?= htmlspecialchars($b['hourly_rate']) ?>/hr</div><?php endif; ?>
+                </div>
+            </div>
+
+            <div style="flex:1;min-width:220px;max-width:420px;background:#f9fbff;padding:12px;border-radius:10px;display:flex;gap:12px;align-items:center">
+                <div style="width:84px;height:84px;border-radius:50%;overflow:hidden;flex-shrink:0;background:#fff">
+                    <?php if(!empty($b['parent_pic'])): ?>
+                        <img src="/brilliance/uploads/<?php echo htmlspecialchars($b['parent_pic']); ?>" alt="Parent" style="width:100%;height:100%;object-fit:cover">
+                    <?php else: ?>
+                        <img src="/brilliance/assets/images/default-avatar.png" alt="Parent" style="width:100%;height:100%;object-fit:cover">
+                    <?php endif; ?>
+                </div>
+                <div>
+                    <div style="font-weight:700">Parent: <a href="/brilliance/parent/view-parent.php?id=<?= $b['parent_id'] ?>"><?= htmlspecialchars($b['parent_name']) ?></a></div>
+                    <?php if(!empty($b['parent_bio'])): ?><div class="muted" style="max-width:320px"><?= htmlspecialchars(substr($b['parent_bio'],0,140)) ?><?php if(strlen($b['parent_bio'])>140) echo '...'; ?></div><?php endif; ?>
+                </div>
+            </div>
+        </div>
         <p><b>When:</b> <?= htmlspecialchars($b['session_date']) ?></p>
         <!-- Notes column removed from schema; no display -->
 

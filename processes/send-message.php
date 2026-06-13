@@ -14,7 +14,15 @@ if ($receiver_id <= 0 || $body === '') { $_SESSION['flash_error']='Receiver and 
 
 require_once __DIR__ . '/../classes/Message.php';
 $msg = new Message();
-$ok = $msg->send($_SESSION['user_id'],$receiver_id,$subject,$body,$booking_id);
-if ($ok) $_SESSION['flash_success']='Message sent'; else $_SESSION['flash_error']='Unable to send message';
+try {
+	$ok = $msg->send($_SESSION['user_id'],$receiver_id,$subject,$body,$booking_id);
+	if ($ok) {
+		$_SESSION['flash_success'] = 'Message sent';
+	} else {
+		$_SESSION['flash_error'] = 'Unable to send message';
+	}
+} catch (Exception $e) {
+	$_SESSION['flash_error'] = 'Exception sending message: ' . $e->getMessage();
+}
 header('Location: ../messages/inbox.php');
 exit();
