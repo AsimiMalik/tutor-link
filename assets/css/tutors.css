@@ -77,6 +77,20 @@
   font-weight: 600;
 }
 
+/* Subject tag */
+.subject-tag {
+  display: inline-block;
+  background: #eef6ff;
+  color: #1e88e5;
+  padding: 6px 8px;
+  margin: 4px 4px 0 0;
+  border-radius: 14px;
+  font-size: 12px;
+  text-decoration: none;
+  border: 1px solid rgba(30,136,229,0.08);
+}
+.subject-tag:hover { background: #e1f0ff; }
+
 @media (max-width: 600px) {
   .tutors-wrapper { padding: 24px 12px; }
   .tutor-card img { width: 90px; height: 90px; }

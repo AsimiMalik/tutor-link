@@ -44,6 +44,23 @@ $stmt->execute();
           <h3><?php echo htmlspecialchars($t['fullname'] ?? 'Tutor'); ?></h3>
           <div class="meta"><?php echo htmlspecialchars($t['location'] ?? 'No location'); ?></div>
 
+          <?php
+          try {
+              $ss = $conn->prepare("SELECT s.name FROM tutor_subjects ts JOIN subjects s ON ts.subject_id = s.id WHERE ts.tutor_id = ? ORDER BY s.name");
+              $ss->execute([ $t['id'] ]);
+              $tsubjects = $ss->fetchAll(PDO::FETCH_COLUMN);
+          } catch (PDOException $e) {
+              $tsubjects = [];
+          }
+          ?>
+          <div style="margin:8px 0">
+            <?php if (!empty($tsubjects)): ?>
+              <?php foreach($tsubjects as $sub): ?>
+                <a class="subject-tag" href="/brilliance/view-tutors.php?subject=<?php echo urlencode($sub); ?>"><?php echo htmlspecialchars($sub); ?></a>
+              <?php endforeach; ?>
+            <?php endif; ?>
+          </div>
+
           <div class="rating">
             <div class="stars">★</div>
             <div><?php echo $t['rating_avg'] ?? '0'; ?> (<?php echo $t['total_reviews'] ?? '0'; ?>)</div>

@@ -14,6 +14,7 @@ class Message {
     }
 
     public function getInbox(int $user_id){
+        // users table does not contain profile_pic in some installs – only select columns that exist
         $stmt = $this->conn->prepare("SELECT m.*, u.fullname AS sender_name FROM messages m JOIN users u ON m.sender_id = u.id WHERE m.receiver_id = ? AND m.deleted_by_receiver = 0 ORDER BY m.created_at DESC");
         $stmt->execute([$user_id]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -26,7 +27,8 @@ class Message {
     }
 
     public function getById(int $id,int $user_id){
-        $stmt = $this->conn->prepare("SELECT m.* FROM messages m WHERE m.id = ? AND (m.receiver_id = ? OR m.sender_id = ?) LIMIT 1");
+        // include sender and receiver names for display
+        $stmt = $this->conn->prepare("SELECT m.*, su.fullname AS sender_name, ru.fullname AS receiver_name FROM messages m JOIN users su ON m.sender_id = su.id JOIN users ru ON m.receiver_id = ru.id WHERE m.id = ? AND (m.receiver_id = ? OR m.sender_id = ?) LIMIT 1");
         $stmt->execute([$id,$user_id,$user_id]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }

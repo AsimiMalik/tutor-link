@@ -13,6 +13,18 @@ if(!isset($_SESSION['role']) || $_SESSION['role'] !== 'tutor'){
 }
 
 $fullname = $_SESSION['fullname'] ?? 'Tutor';
+
+// compute unread messages count
+$unread_count = 0;
+require_once __DIR__ . '/../classes/Database.php';
+$db = new Database(); $conn = $db->connect();
+if ($conn) {
+    try {
+        $stmt = $conn->prepare('SELECT COUNT(*) as cnt FROM messages WHERE receiver_id = ? AND is_read = 0');
+        $stmt->execute([$_SESSION['user_id']]);
+        $unread_count = (int)$stmt->fetch(PDO::FETCH_ASSOC)['cnt'];
+    } catch (Exception $e) { $unread_count = 0; }
+}
 ?>
 
 <!DOCTYPE html>
@@ -39,7 +51,11 @@ $fullname = $_SESSION['fullname'] ?? 'Tutor';
 <h2>Welcome, <?php echo htmlspecialchars($fullname); ?> 👋</h2>
 <p>Manage your profile and students here</p>
 </div>
-
+ 
+<div style="display:flex;justify-content:flex-end;gap:8px;margin-bottom:18px">
+    <a href="/brilliance/messages/inbox.php" class="btn-outline">Inbox<?php if ($unread_count>0) echo ' <span class="badge">'.htmlspecialchars($unread_count).'</span>'; ?></a>
+    <a href="/brilliance/tutor/create-quiz.php" class="btn-primary">Create Quiz</a>
+</div>
 <div class="tutors-grid">
 
 <div class="tutor-card">
@@ -57,7 +73,18 @@ $fullname = $_SESSION['fullname'] ?? 'Tutor';
 <div class="tutor-card">
 <h3>Messages</h3>
 <p>Chat with parents and students.</p>
-<a href="#" class="btn-primary">Open Chat</a>
+<div style="display:flex;align-items:center;gap:8px">
+    <a href="/brilliance/messages/inbox.php" class="btn-primary">Open Inbox</a>
+    <?php if ($unread_count > 0): ?>
+        <span style="background:#e74c3c;color:#fff;padding:6px 10px;border-radius:18px;font-weight:600;"><?= $unread_count ?> new</span>
+    <?php endif; ?>
+    </div>
+</div>
+
+<div class="tutor-card">
+<h3>Create Quiz</h3>
+<p>Create and assign quizzes to your students. Use AI-assist to generate questions.</p>
+<a href="/brilliance/tutor/create-quiz.php" class="btn-primary">Create Quiz</a>
 </div>
 
 </div>

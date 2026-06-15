@@ -28,6 +28,7 @@ if ($loggedIn) {
     <ul class="nav-links">
       <li><a href="/brilliance/index.php">Home</a></li>
       <li><a href="/brilliance/view-tutors.php">Find Tutors</a></li>
+      <li><a href="/brilliance/quizzes/index.php">Quizzes</a></li>
       <li><a href="/brilliance/auth/register.php">Become a Tutor</a></li>
       <li><a href="/brilliance/about.php">About</a></li>
       <li><a href="/brilliance/contact.php">Contact</a></li>
@@ -46,6 +47,32 @@ if ($loggedIn) {
       <?php endif; ?>
     </div>
 
+    <button class="nav-toggle" aria-label="Toggle menu">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+
   </div>
 
 </nav>
+
+<script>
+// navbar toggle
+document.addEventListener('DOMContentLoaded', function(){
+  const toggle = document.querySelector('.nav-toggle');
+  const links = document.querySelector('.nav-links');
+  if (!toggle || !links) return;
+  toggle.addEventListener('click', function(){
+    if (links.style.display === 'flex' || links.style.display === 'block') {
+      links.style.display = 'none';
+    } else {
+      links.style.display = 'flex';
+    }
+  });
+  // close when clicking outside on small screens
+  document.addEventListener('click', function(e){
+    if (!links.contains(e.target) && !toggle.contains(e.target) && window.innerWidth <= 1000) {
+      links.style.display = 'none';
+    }
+  });
+});
+</script>

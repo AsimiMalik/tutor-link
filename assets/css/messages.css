@@ -1,0 +1,64 @@
+/* Message-specific styles to ensure visibility below fixed navbar and improved UI */
+:root{ --nav-height:120px; }
+
+.message-page{
+  max-width:1000px;
+  margin: 0 auto;
+  padding: 24px;
+  margin-top: calc(var(--nav-height) + 12px);
+  box-sizing: border-box;
+}
+
+/* Form */
+.message-form{
+  background: #fff;
+  padding: 18px;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(2,6,23,0.06);
+}
+.message-form label{ display:block; margin:10px 0 6px; font-weight:600; color:#475569; }
+.message-form input[type="text"], .message-form input[type="number"], .message-form textarea{
+  width:100%; padding:12px 14px; border:1px solid #e6edf3; border-radius:8px; font-size:14px; color:#0f172a;
+}
+.message-form textarea{ min-height:160px; resize:vertical; }
+.message-actions{ margin-top:12px; display:flex; gap:10px; align-items:center; }
+
+/* List */
+.message-list{ display:flex; flex-direction:column; gap:12px; margin-top:12px; }
+.message-card{
+  background:#fff;
+  padding:14px;
+  border-radius:10px;
+  box-shadow:0 10px 30px rgba(17,24,39,0.04);
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  align-items:flex-start;
+  border-left:4px solid rgba(99,102,241,0.06);
+}
+.message-meta{ display:flex; flex-direction:column; gap:6px; max-width:72%; }
+.message-subject{ font-weight:700; color:#0f172a; font-size:15px; }
+.message-snippet{ color:#475569; font-size:14px; }
+.message-date{ color:#8891a6; font-size:13px; }
+.message-actions .btn{ padding:8px 12px; }
+.unread-badge{ background:#f59e0b; color:#fff; font-size:12px; padding:6px 8px; border-radius:12px; font-weight:700; }
+
+/* avatar */
+.message-avatar { width:48px; height:48px; border-radius:50%; object-fit:cover; margin-right:12px; border:2px solid #fff; box-shadow:0 6px 18px rgba(2,6,23,0.06); }
+.message-row { display:flex; align-items:flex-start; gap:12px; }
+
+/* refined buttons */
+.btn { padding:8px 12px; border-radius:8px; text-decoration:none; display:inline-block; }
+.btn-outline { background: transparent; border:1px solid rgba(15,23,42,0.06); color:#0f172a; }
+.btn-primary { background:#4f46e5; color:#fff; }
+
+/* Single message view */
+.message-detail{ background:#fff; padding:18px; border-radius:10px; box-shadow:0 6px 20px rgba(2,6,23,0.05); }
+.message-detail p{ margin:8px 0; }
+
+@media (max-width:700px){
+  :root{ --nav-height:100px; }
+  .message-page{ margin-top: calc(var(--nav-height) + 8px); padding:16px; }
+  .message-card{ flex-direction:column; align-items:flex-start; }
+  .message-meta{ max-width:100%; }
+}

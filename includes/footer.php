@@ -25,6 +25,7 @@
         <a href="/brilliance/auth/login.php">Find Tutors</a>
         <a href="/brilliance/auth/register.php">Become a Tutor</a>
         <a href="/brilliance/index.php">Top Tutors</a>
+        <a href="/brilliance/quizzes/index.php">Quizzes</a>
 
       </div>
 

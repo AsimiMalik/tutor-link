@@ -21,6 +21,15 @@ if (!$data) {
     echo 'Tutor not found';
     exit();
 }
+
+// fetch subjects taught by this tutor (if table exists)
+try {
+    $sstmt = $conn->prepare("SELECT s.name FROM tutor_subjects ts JOIN subjects s ON ts.subject_id = s.id WHERE ts.tutor_id = ? ORDER BY s.name");
+    $sstmt->execute([$id]);
+    $subjects = $sstmt->fetchAll(PDO::FETCH_COLUMN);
+} catch (PDOException $e) {
+    $subjects = [];
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -85,7 +94,7 @@ if (!$data) {
                 </div>
 
                 <div class="stat">
-                    <h4>—</h4>
+                    <h4><?php echo count($subjects); ?></h4>
                     <p>Subjects</p>
                 </div>
             </div>
@@ -123,6 +132,19 @@ if (!$data) {
             <div class="section">
                 <h3>Experience</h3>
                 <p><?php echo nl2br(htmlspecialchars($data['experience'] ?? 'No experience provided')); ?></p>
+            </div>
+
+            <div class="section">
+                <h3>Subjects</h3>
+                <p>
+                    <?php if (!empty($subjects)): ?>
+                        <?php foreach($subjects as $s): ?>
+                            <a class="subject-tag" href="/brilliance/view-tutors.php?subject=<?php echo urlencode($s); ?>"><?php echo htmlspecialchars($s); ?></a>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        No subjects listed
+                    <?php endif; ?>
+                </p>
             </div>
 
             <div class="section">

@@ -87,27 +87,29 @@ include 'includes/navbar.php';?>
     </div>
 
     <div class="search-card">
+      <form action="/brilliance/view-tutors.php" method="get" style="display:contents;">
 
-      <div class="search-field">
-        <i class="fa-solid fa-book"></i>
-        <input type="text" placeholder="Subject">
-      </div>
+        <div class="search-field">
+          <i class="fa-solid fa-book"></i>
+          <input type="text" name="subject" placeholder="Subject" value="<?php echo htmlspecialchars($_GET['subject'] ?? ''); ?>">
+        </div>
 
-      <div class="search-field">
-        <i class="fa-solid fa-location-dot"></i>
-        <input type="text" placeholder="Location">
-      </div>
+        <div class="search-field">
+          <i class="fa-solid fa-location-dot"></i>
+          <input type="text" name="location" placeholder="Location" value="<?php echo htmlspecialchars($_GET['location'] ?? ''); ?>">
+        </div>
 
-      <div class="search-field">
-        <i class="fa-solid fa-school"></i>
-        <input type="text" placeholder="Class Level">
-      </div>
+        <div class="search-field">
+          <i class="fa-solid fa-school"></i>
+          <input type="text" name="level" placeholder="Class Level (optional)" value="<?php echo htmlspecialchars($_GET['level'] ?? ''); ?>">
+        </div>
 
-      <button class="search-btn">
-        <i class="fa-solid fa-magnifying-glass"></i>
-        Search Tutors
-      </button>
+        <button type="submit" class="search-btn">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          Search Tutors
+        </button>
 
+      </form>
     </div>
 
   </div>
@@ -147,7 +149,7 @@ include 'includes/navbar.php';?>
           8+ years of experience helping students excel in Mathematics.
         </p>
 
-        <a href="login.php" class="btn-primary">
+        <a href="auth/login.php" class="btn-primary">
           View Profile
         </a>
 
@@ -171,7 +173,7 @@ include 'includes/navbar.php';?>
           Specialist in WAEC, NECO and secondary school English preparation.
         </p>
 
-        <a href="login.php" class="btn-primary">
+        <a href="auth/login.php" class="btn-primary">
           View Profile
         </a>
 
@@ -195,7 +197,7 @@ include 'includes/navbar.php';?>
           Passionate about simplifying Physics and Science concepts.
         </p>
 
-        <a href="login.php" class="btn-primary">
+        <a href="auth/login.php" class="btn-primary">
           View Profile
         </a>
 

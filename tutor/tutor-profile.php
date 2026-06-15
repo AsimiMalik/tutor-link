@@ -102,7 +102,9 @@ This creates $data variable from database
                 <h3>Subjects</h3>
                 <p>
                     <?php if (!empty($data['subjects'])): ?>
-                        <?= htmlspecialchars(implode(', ', $data['subjects'])) ?>
+                        <?php foreach ($data['subjects'] as $sub): ?>
+                            <a class="subject-tag" href="/brilliance/view-tutors.php?subject=<?php echo urlencode($sub); ?>"><?php echo htmlspecialchars($sub); ?></a>
+                        <?php endforeach; ?>
                     <?php else: ?>
                         No subjects added
                     <?php endif; ?>

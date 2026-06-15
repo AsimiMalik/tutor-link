@@ -32,6 +32,10 @@ body{
   overflow-x:hidden;
 }
 
+/* Ensure fixed navbar doesn't cover page content */
+body { padding-top: 120px !important; }
+.navbar { z-index: 2000; }
+
 /* =========================
    MAIN WRAPPER DIV
    <div class="container">
@@ -62,6 +66,7 @@ body{
   justify-content:space-between;
   align-items:center;
   padding:18px 0;
+  flex-wrap:wrap;
 }
 
 /* LOGO AREA */
@@ -90,6 +95,19 @@ body{
   list-style:none;
 }
 
+/* Mobile menu toggle */
+.nav-toggle{
+  display:none;
+  background:transparent;
+  border:none;
+  cursor:pointer;
+  width:44px;
+  height:44px;
+  align-items:center;
+  justify-content:center;
+}
+.nav-toggle svg{ width:22px; height:22px; fill:var(--dark); }
+
 .nav-links a{
   text-decoration:none;
   color:var(--dark);
@@ -102,30 +120,49 @@ body{
   gap:12px;
 }
 
+/* small badge used in navbar for unread counts */
+.badge{
+  display:inline-block;
+  background:var(--secondary);
+  color:#fff;
+  padding:4px 8px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:700;
+  line-height:1;
+  margin-left:6px;
+}
+
 /* =========================
    BUTTONS (USED IN HTML BUTTONS & LINKS)
 ========================= */
 .btn-primary,
 .cta-btn,
 .search-btn{
-  background:var(--primary);
+  background: linear-gradient(90deg,var(--primary),var(--primary-dark));
   color:white;
   border:none;
-  padding:14px 28px;
-  border-radius:12px;
-  font-weight:600;
+  padding:12px 22px;
+  border-radius:10px;
+  font-weight:700;
   cursor:pointer;
   text-decoration:none;
+  box-shadow: 0 8px 24px rgba(37,99,235,0.12);
+  transition: transform .14s ease, box-shadow .14s ease;
 }
 
 .btn-outline{
   border:2px solid var(--primary);
   color:var(--primary);
-  padding:12px 24px;
-  border-radius:12px;
+  padding:10px 18px;
+  border-radius:10px;
   text-decoration:none;
   font-weight:600;
 }
+
+.btn-primary:hover{ transform: translateY(-3px); box-shadow: 0 14px 40px rgba(37,99,235,0.16); }
+.btn-outline{ background:transparent; transition: background .12s, color .12s, transform .12s; }
+.btn-outline:hover{ background:rgba(37,99,235,0.06); color:var(--primary-dark); transform: translateY(-2px); }
 
 .btn-secondary{
   border:2px solid var(--secondary);
@@ -258,6 +295,34 @@ body{
   grid-template-columns:2fr 1.5fr 1.5fr auto;
   gap:15px;
 }
+
+/* =========================
+   MESSAGES / INBOX / COMPOSE
+========================= */
+.message-page { max-width:1000px; margin:120px auto 30px; padding:20px; }
+.message-form { background:#fff; padding:18px; border-radius:12px; box-shadow:0 8px 20px rgba(2,6,23,0.06); }
+.message-form label { display:block; margin:10px 0 6px; font-weight:600; color:var(--text); }
+.message-form input[type="text"], .message-form input[type="number"], .message-form textarea { width:100%; padding:12px 14px; border:1px solid var(--border); border-radius:8px; font-size:14px; color:var(--dark); }
+.message-form textarea { min-height:160px; resize:vertical; }
+.message-actions { margin-top:12px; display:flex; gap:10px; align-items:center; }
+
+.message-list { display:flex; flex-direction:column; gap:12px; }
+.message-card { background:#fff; padding:14px; border-radius:10px; box-shadow:0 6px 18px rgba(2,6,23,0.04); display:flex; justify-content:space-between; gap:12px; align-items:flex-start; border-left:4px solid rgba(30,136,229,0.06); }
+.message-meta { display:flex; flex-direction:column; gap:6px; }
+.message-subject { font-weight:700; color:var(--dark); font-size:15px; }
+.message-snippet { color:var(--text); font-size:14px; }
+.message-date { color:#8891a6; font-size:13px; }
+.message-actions .btn { padding:8px 12px; }
+.unread-badge { background:var(--secondary); color:#fff; font-size:12px; padding:6px 8px; border-radius:12px; font-weight:700; }
+
+/* Heading clarity inside message pages */
+.message-page h2 { font-size:26px; margin-bottom:12px; color:var(--dark); }
+
+@media (max-width:700px){ .message-card { flex-direction:column; align-items:flex-start; } }
+
+/* Ensure pages are positioned below the fixed navbar
+  This overrides inline margins on pages so content isn't hidden. */
+.page, .page-container, .message-page { margin-top: 120px !important; }
 
 .search-field{
   display:flex;
@@ -455,12 +520,72 @@ body{
   }
 
   .nav-links{
+    position:fixed;
+    inset:72px 16px 16px 16px;
+    background: #fff;
+    flex-direction:column;
+    gap:12px;
+    padding:16px;
+    border-radius:12px;
+    box-shadow:0 12px 40px rgba(2,6,23,0.12);
     display:none;
+    z-index:1500;
   }
 
+  .nav-toggle{ display:inline-flex; }
+
+
+@media(max-width:700px){
+  .nav-links{ left:12px; right:12px; }
+}
   .hero h1{
     font-size:48px;
   }
+}
+
+/* Quiz UI improvements */
+.quiz-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:18px; }
+.quiz-card{ background:#fff; padding:18px; border-radius:14px; box-shadow:0 8px 24px rgba(2,6,23,0.06); border:1px solid var(--border); }
+.quiz-card{ position:relative; overflow:hidden; }
+.quiz-card:before{ content:''; position:absolute; right:-120px; top:-60px; width:280px; height:280px; background:linear-gradient(135deg,rgba(37,99,235,0.06),rgba(37,99,235,0.02)); transform:rotate(25deg); }
+.quiz-card h3{ margin:0 0 8px; font-size:18px; color:var(--dark); }
+.quiz-card .card-meta{ color:var(--text); font-size:13px; }
+
+.card-header{ display:flex; align-items:center; gap:12px; margin-bottom:8px; }
+.card-icon{ width:44px; height:44px; display:inline-flex; align-items:center; justify-content:center; border-radius:10px; background:linear-gradient(180deg, rgba(37,99,235,0.1), rgba(29,78,216,0.06)); }
+.card-icon svg{ width:22px; height:22px; fill:var(--primary); }
+.quiz-card p{ color:var(--text); font-size:14px; margin-bottom:12px; }
+.quiz-meta{ display:flex; gap:12px; font-size:13px; color:#6b7280; align-items:center; }
+.quiz-actions{ margin-top:12px; display:flex; gap:10px; }
+
+.quiz-question{ background:linear-gradient(180deg,#ffffff,#fbfdff); padding:16px; border-radius:12px; box-shadow:0 10px 30px rgba(2,6,23,0.04); margin-bottom:14px; border:1px solid rgba(226,232,240,0.7); }
+.quiz-question .q-title{ font-weight:700; margin-bottom:8px; font-size:16px; }
+.quiz-question .choices label{ display:block; margin:8px 0; padding:8px 10px; border-radius:8px; transition:background .12s, border-color .12s; border:1px solid transparent; }
+.quiz-question .choices label:hover{ background:rgba(37,99,235,0.03); border-color:rgba(37,99,235,0.06); }
+.quiz-question input[type="radio"]{ margin-right:10px; accent-color: var(--primary); }
+.quiz-question .choices label{ display:block; margin:8px 0; }
+
+.quiz-footer-sticky{ position:sticky; bottom:0; background:linear-gradient(180deg,rgba(255,255,255,0),#fff); padding-top:12px; }
+
+@media(max-width:900px){
+  .quiz-grid{ grid-template-columns:1fr; }
+  .quiz-card{ padding:14px; }
+}
+
+/* small screens: make buttons full-width inside quiz footer */
+@media(max-width:600px){
+  .quiz-footer-sticky .message-actions { display:flex; flex-direction:column; gap:8px; }
+  .btn-primary, .btn-outline { width:100%; display:block; text-align:center; }
+}
+
+/* Additional small-screen tweaks */
+@media(max-width:700px){
+  .logo img{ width:40px; }
+  .logo{ font-size:20px; }
+  .nav-buttons{ gap:8px; }
+  .btn-primary, .btn-outline{ padding:10px 14px; border-radius:10px; }
+  body { padding-top:100px !important; }
+  .page, .page-container, .message-page { margin-top: 100px !important; }
 }
 
 /* =========================

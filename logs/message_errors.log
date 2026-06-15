@@ -1,0 +1,6 @@
+2026-06-15T07:14:58+00:00 - exception sending message - receiver=11 sender=13
+SQLSTATE[23000]: Integrity constraint violation: 1452 Cannot add or update a child row: a foreign key constraint fails (`brilliance`.`messages`, CONSTRAINT `fk_messages_booking` FOREIGN KEY (`booking_id`) REFERENCES `bookings` (`id`) ON DELETE SET NULL)
+#0 C:\wampsever_king\www\brilliance\classes\Message.php(13): PDOStatement->execute(Array)
+#1 C:\wampsever_king\www\brilliance\processes\send-message.php(30): Message->send(13, 11, 'english', 'i love your job...', 0)
+#2 {main}
+
