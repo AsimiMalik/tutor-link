@@ -65,3 +65,22 @@
   .message-card{ flex-direction:column; align-items:flex-start; }
   .message-meta{ max-width:100%; }
 }
+
+/* Thread and bubble styles for chat view */
+.thread{ display:flex; flex-direction:column; gap:12px; }
+.bubble{ padding:12px 14px; border-radius:12px; max-width:80%; line-height:1.5; }
+.bubble.incoming{ background:#fff; border:1px solid var(--border); align-self:flex-start; color:var(--dark); }
+.bubble.outgoing{ background:linear-gradient(90deg,rgba(37,99,235,0.95),rgba(29,78,216,0.95)); color:#fff; align-self:flex-end; box-shadow:0 8px 30px rgba(37,99,235,0.12); }
+.chat-meta{ font-size:12px; color:#8891a6; margin-top:6px; }
+
+/* Ensure chat thread sits nicely in glass card */
+.chat-container{ display:flex; flex-direction:column; gap:12px; }
+.chat-container{ max-height:60vh; overflow:auto; padding:8px; }
+
+/* chat-row for alignment with avatars */
+.chat-row{ display:flex; gap:8px; align-items:flex-end; }
+.chat-row.incoming{ justify-content:flex-start; }
+.chat-row.outgoing{ justify-content:flex-end; }
+.chat-avatar{ width:40px; height:40px; border-radius:50%; object-fit:cover; box-shadow:0 6px 18px rgba(2,6,23,0.06); }
+.bubble{ border-radius:14px; }
+

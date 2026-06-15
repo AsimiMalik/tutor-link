@@ -46,6 +46,20 @@ require_once "../classes/Database.php";
 $db = new Database();
 $conn = $db->connect();
 
+// Ensure `qualification_file` column exists (auto-migrate if missing)
+try {
+    $colStmt = $conn->prepare("SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = ? AND TABLE_NAME = 'tutor_profile' AND COLUMN_NAME = 'qualification_file' LIMIT 1");
+    $cfg = include __DIR__ . '/../config/db-connect.php';
+    $colStmt->execute([$cfg['dbname']]);
+    $col = $colStmt->fetch(PDO::FETCH_ASSOC);
+    if (!$col) {
+        // attempt to add column
+        $conn->exec("ALTER TABLE tutor_profile ADD COLUMN qualification_file VARCHAR(255) NULL AFTER qualification");
+    }
+} catch (Exception $e) {
+    // If we can't alter the table (permissions etc.), continue silently; upload will still save file on disk
+}
+
 /*
 ----------------------------------------------------
 GET USER ID
@@ -78,7 +92,7 @@ if (isset($_FILES['profile_pic']) && $_FILES['profile_pic']['error'] == 0) {
 
     $file = $_FILES['profile_pic'];
 
-    $file_name = time() . "_" . basename($file['name']);
+    $file_name = $user_id . '_' . time() . "_" . basename($file['name']);
     // use absolute path to avoid relative path issues
     $target_dir = __DIR__ . '/../uploads/';
 
@@ -99,22 +113,46 @@ if (isset($_FILES['profile_pic']) && $_FILES['profile_pic']['error'] == 0) {
 
 // qualification file upload (optional)
 $qualification_file_name = null;
-if (isset($_FILES['qualification_file']) && $_FILES['qualification_file']['error'] == 0) {
+if (isset($_FILES['qualification_file'])) {
     $qfile = $_FILES['qualification_file'];
-    $qext = strtolower(pathinfo($qfile['name'], PATHINFO_EXTENSION));
-    $allowed = ['pdf','doc','docx','jpg','jpeg','png'];
-    if (!in_array($qext, $allowed)) {
-        $_SESSION['error'] = 'Invalid qualification file type. Allowed: pdf, doc, docx, jpg, png';
+    // handle common upload errors
+    if (!isset($qfile['error']) || is_array($qfile['error'])) {
+        $_SESSION['error'] = 'Invalid file upload.';
         header('Location: ../tutor/tutor-edit-profile.php'); exit();
     }
-    $qfile_name = time() . "_qual_" . basename($qfile['name']);
-    $qtarget_dir = __DIR__ . '/../uploads/qualifications/';
-    if (!is_dir($qtarget_dir)) mkdir($qtarget_dir, 0755, true);
-    $qtarget_file = $qtarget_dir . $qfile_name;
-    if (move_uploaded_file($qfile['tmp_name'], $qtarget_file)) {
-        $qualification_file_name = $qfile_name;
-    } else {
-        $_SESSION['error'] = 'Unable to save qualification file.';
+    if ($qfile['error'] !== UPLOAD_ERR_OK && $qfile['error'] !== 0) {
+        // map error
+        $errMap = [
+            UPLOAD_ERR_INI_SIZE => 'The uploaded file exceeds the upload_max_filesize directive.',
+            UPLOAD_ERR_FORM_SIZE => 'The uploaded file exceeds the MAX_FILE_SIZE directive.',
+            UPLOAD_ERR_PARTIAL => 'The uploaded file was only partially uploaded.',
+            UPLOAD_ERR_NO_FILE => 'No file was uploaded.',
+            UPLOAD_ERR_NO_TMP_DIR => 'Missing a temporary folder.',
+            UPLOAD_ERR_CANT_WRITE => 'Failed to write file to disk.',
+            UPLOAD_ERR_EXTENSION => 'A PHP extension stopped the file upload.'
+        ];
+        $msg = $errMap[$qfile['error']] ?? 'Unknown upload error.';
+        $_SESSION['error'] = 'Qualification upload error: ' . $msg;
+        header('Location: ../tutor/tutor-edit-profile.php'); exit();
+    }
+    // proceed only if upload OK and file provided
+    if ($qfile['error'] == UPLOAD_ERR_OK || $qfile['error'] == 0) {
+        $qext = strtolower(pathinfo($qfile['name'], PATHINFO_EXTENSION));
+        $allowed = ['pdf','doc','docx','jpg','jpeg','png'];
+        if (!in_array($qext, $allowed)) {
+            $_SESSION['error'] = 'Invalid qualification file type. Allowed: pdf, doc, docx, jpg, png';
+            header('Location: ../tutor/tutor-edit-profile.php'); exit();
+        }
+        $qfile_name = $user_id . '_' . time() . "_qual_" . basename($qfile['name']);
+        $qtarget_dir = __DIR__ . '/../uploads/qualifications/';
+        if (!is_dir($qtarget_dir)) mkdir($qtarget_dir, 0755, true);
+        $qtarget_file = $qtarget_dir . $qfile_name;
+        if (move_uploaded_file($qfile['tmp_name'], $qtarget_file)) {
+            $qualification_file_name = $qfile_name;
+        } else {
+            $_SESSION['error'] = 'Unable to save qualification file to disk.';
+            header('Location: ../tutor/tutor-edit-profile.php'); exit();
+        }
     }
 }
 
@@ -126,6 +164,40 @@ CHECK IF PROFILE EXISTS
 $stmt = $conn->prepare("SELECT id FROM tutor_profile WHERE user_id = ?");
 $stmt->execute([$user_id]);
 $exists = $stmt->fetch();
+
+// If there's no qualification_file recorded but a file exists in uploads/qualifications prefixed with userId_, link the latest one.
+try {
+    $qstmt = $conn->prepare("SELECT qualification_file FROM tutor_profile WHERE user_id = ? LIMIT 1");
+    $qstmt->execute([$user_id]);
+    $qrow = $qstmt->fetch(PDO::FETCH_ASSOC);
+    if (!$qrow || empty($qrow['qualification_file'])) {
+        $qualDir = __DIR__ . '/../uploads/qualifications';
+        if (is_dir($qualDir)) {
+            $files = array_values(array_filter(scandir($qualDir), function($f){ return $f !== '.' && $f !== '..' && is_file(__DIR__.'/../uploads/qualifications/'.$f); }));
+            // find files starting with userId_ prefix
+            $pref = $user_id . '_';
+            $candidates = array_filter($files, function($f) use ($pref){ return strpos($f, $pref) === 0; });
+            if (!empty($candidates)) {
+                // pick latest by modified time
+                usort($candidates, function($a,$b) use ($qualDir){ return filemtime($qualDir.'/'.$b) - filemtime($qualDir.'/'.$a); });
+                $chosen = $candidates[0];
+                if ($exists) {
+                    $up = $conn->prepare('UPDATE tutor_profile SET qualification_file = ? WHERE user_id = ?');
+                    $up->execute([$chosen, $user_id]);
+                } else {
+                    $ins = $conn->prepare('INSERT INTO tutor_profile (user_id, qualification_file, created_at, updated_at) VALUES (?, ?, NOW(), NOW())');
+                    $ins->execute([$user_id, $chosen]);
+                    // refresh $exists for downstream logic
+                    $stmt = $conn->prepare("SELECT id FROM tutor_profile WHERE user_id = ?");
+                    $stmt->execute([$user_id]);
+                    $exists = $stmt->fetch();
+                }
+            }
+        }
+    }
+} catch (Exception $e) {
+    // ignore reconciliation errors
+}
 
 /*
 ----------------------------------------------------

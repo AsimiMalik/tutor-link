@@ -47,6 +47,9 @@ if ($loggedIn) {
       <li><a href="/brilliance/auth/register.php">Become a Tutor</a></li>
       <li><a href="/brilliance/about.php">About</a></li>
       <li><a href="/brilliance/contact.php">Contact</a></li>
+      <?php if ($loggedIn && (!empty($_SESSION['role']) && $_SESSION['role'] === 'admin')): ?>
+        <li><a href="/brilliance/admin/dashboard.php">Admin</a></li>
+      <?php endif; ?>
       <?php if ($loggedIn): ?>
         <li><a href="/brilliance/messages/inbox.php">Messages<?php if ($unread>0) echo ' <span class="badge">'.htmlspecialchars($unread).'</span>'; ?></a></li>
       <?php endif; ?>

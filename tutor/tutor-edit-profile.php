@@ -18,7 +18,7 @@ require_once __DIR__ . '/../includes/csrf.php';
 
 <body>
 
-<!-- <?php include '../includes/tutor-navbar.php'; ?> -->
+
 
 <section class="dashboard-section">
 <div class="container">
@@ -26,6 +26,21 @@ require_once __DIR__ . '/../includes/csrf.php';
 <div class="section-title">
     <h2>Edit Profile</h2>
 </div>
+
+<?php if (!empty($_SESSION['error'])): ?>
+    <div class="page" style="max-width:700px;margin:10px auto;padding:0">
+        <div class="glass-card" style="border-left:4px solid #ff6b00;color:#111;padding:12px">
+            <?php echo htmlspecialchars($_SESSION['error']); unset($_SESSION['error']); ?>
+        </div>
+    </div>
+<?php endif; ?>
+<?php if (!empty($_SESSION['success'])): ?>
+    <div class="page" style="max-width:700px;margin:10px auto;padding:0">
+        <div class="glass-card" style="border-left:4px solid var(--primary);color:#111;padding:12px">
+            <?php echo htmlspecialchars($_SESSION['success']); unset($_SESSION['success']); ?>
+        </div>
+    </div>
+<?php endif; ?>
 
 <form class="tutor-card"
       method="POST"

@@ -1,111 +1,32 @@
 <?php
 session_start();
-
-require_once "../classes/Database.php";
-require_once "../classes/Admin.php";
-
-$db = new Database();
-$conn = $db->connect();
-
-/* =========================
-   ADMIN AUTH CHECK
-========================= */
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
-    header("Location: ../auth/login.php");
-    exit();
-}
-
-/* =========================
-   LOAD ADMIN CLASS
-========================= */
-$admin = new Admin($conn);
-
-/* =========================
-   DASHBOARD STATS (USING CLASS)
-========================= */
-$total_tutors = $admin->count("users", "WHERE role='tutor'");
-$pending_tutors = $admin->count("users", "WHERE role='tutor' AND status='pending'");
-$approved_tutors = $admin->count("users", "WHERE role='tutor' AND status='approved'");
-$suspended_tutors = $admin->count("users", "WHERE role='tutor' AND status='suspended'");
-
-$total_bookings = $admin->count("bookings");
-$total_reviews = $admin->count("reviews");
-$total_complaints = $admin->count("complaints");
-
+if (!isset($_SESSION['user_id']) || ($_SESSION['role'] ?? '') !== 'admin') { header('Location: ../auth/login.php'); exit(); }
+require_once __DIR__ . '/../classes/Database.php';
+$db = new Database(); $conn = $db->connect();
 ?>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Admin Dashboard | Tutor My Ward</title>
-
-    <link rel="stylesheet" href="includes/admin.css">
-</head>
-<body>
-
-<!-- SIDEBAR -->
-<?php include "includes/sidebar.php"; ?>
-
-<div class="main">
-
-    <!-- HEADER -->
-    <?php include "includes/header.php"; ?>
-
-    <h2>Dashboard Overview</h2>
-    <p>Welcome Admin 👋 Manage tutors, bookings, reviews and complaints here.</p>
-
-    <!-- STATS GRID -->
-    <div class="grid">
-
-        <div class="card">
-            <h3>Total Tutors</h3>
-            <p><?= $total_tutors ?></p>
-        </div>
-
-        <div class="card">
-            <h3>Pending Tutors</h3>
-            <p><?= $pending_tutors ?></p>
-        </div>
-
-        <div class="card">
-            <h3>Approved Tutors</h3>
-            <p><?= $approved_tutors ?></p>
-        </div>
-
-        <div class="card">
-            <h3>Suspended Tutors</h3>
-            <p><?= $suspended_tutors ?></p>
-        </div>
-
-        <div class="card">
-            <h3>Total Bookings</h3>
-            <p><?= $total_bookings ?></p>
-        </div>
-
-        <div class="card">
-            <h3>Total Reviews</h3>
-            <p><?= $total_reviews ?></p>
-        </div>
-
-        <div class="card">
-            <h3>Total Complaints</h3>
-            <p><?= $total_complaints ?></p>
-        </div>
-
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Admin Dashboard</title>
+<link rel="stylesheet" href="/brilliance/assets/css/style.css">
+</head><body>
+<?php include __DIR__ . '/../includes/navbar.php'; ?>
+<div class="page" style="max-width:1100px;margin:120px auto;padding:20px">
+    <h2>Admin Dashboard</h2>
+    <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:18px">
+        <a class="btn-primary" href="users.php">Manage Users</a>
+        <a class="btn-primary" href="tutors.php">Manage Tutors</a>
+        <a class="btn-primary" href="run_migrations.php">Run Migrations</a>
+        <a class="btn-primary" href="../scripts/run_reconcile.php">Reconcile Qualification Uploads</a>
+        <a class="btn-primary" href="audit.php">Audit Logs</a>
+        <a class="btn-outline" href="actions.php?action=export_logs">Export Logs</a>
     </div>
-
-    <!-- QUICK ACTIONS -->
-    <div style="margin-top: 30px;">
-        <h3>Quick Actions</h3>
-
-        <a href="tutors.php">Manage Tutors</a> |
-        <a href="bookings.php">Manage Bookings</a> |
-        <a href="reviews.php">Manage Reviews</a> |
-        <a href="complaints.php">View Complaints</a>
+    <hr style="margin:20px 0">
+    <div class="glass-card">
+        <?php
+            $u = $conn->query("SELECT COUNT(*) FROM users")->fetchColumn();
+            $t = $conn->query("SELECT COUNT(*) FROM users WHERE role = 'tutor'")->fetchColumn();
+            $p = $conn->query("SELECT COUNT(*) FROM users WHERE role = 'parent'")->fetchColumn();
+            echo "<strong>Totals:</strong> Users: {$u} — Tutors: {$t} — Parents: {$p}";
+        ?>
     </div>
-
 </div>
-
-</body>
-</html>
+</body></html>

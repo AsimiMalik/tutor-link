@@ -2,6 +2,13 @@
 // Simple migration runner for local use.
 // Usage: php scripts/apply_migrations.php
 
+// Disable migrations if lock file exists
+$lockFile = __DIR__ . '/../db/migrations.lock';
+if (file_exists($lockFile)) {
+    echo "Migrations are disabled (db/migrations.lock present). Remove the lock file to re-enable." . PHP_EOL;
+    exit(0);
+}
+
 $config = include __DIR__ . '/../config/db-connect.php';
 $dsn = sprintf('mysql:host=%s;dbname=%s;charset=%s', $config['host'], $config['dbname'], $config['charset']);
 try {
@@ -50,7 +57,17 @@ foreach ($files as $file) {
         $stmts = array_filter(array_map('trim', preg_split('/;\s*\n/', $sql)));
         foreach ($stmts as $stmt) {
             if ($stmt === '') continue;
-            $pdo->exec($stmt);
+            try {
+                $pdo->exec($stmt);
+            } catch (PDOException $pe) {
+                $msg = $pe->getMessage();
+                // If column already exists or duplicate key/constraint, skip and continue
+                if (stripos($msg, 'Duplicate column name') !== false || stripos($msg, 'already exists') !== false || stripos($msg, 'Duplicate key name') !== false) {
+                    echo "Warning (non-fatal): " . $msg . "\n";
+                    continue;
+                }
+                throw $pe;
+            }
         }
         echo "Applied: $file\n";
     } catch (Exception $e) {

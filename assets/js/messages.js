@@ -9,23 +9,45 @@
 
   function render(messages){
     list.innerHTML = '';
+    const thread = document.createElement('div'); thread.className = 'thread chat-container';
     messages.forEach(m => {
-      const card = document.createElement('div'); card.className='message-card';
-      const left = document.createElement('div'); left.className='message-meta';
-      const who = document.createElement('div'); who.style.fontWeight='700';
-      // show 'You' for current user's messages, otherwise show the sender's full name if available
-      who.textContent = (m.sender_id == window.USER_ID ? 'You' : (m.sender_name || 'User'));
-      const subject = document.createElement('div'); subject.className='message-subject'; subject.textContent = (m.subject || '');
-      const snippet = document.createElement('div'); snippet.className='message-snippet'; snippet.textContent = m.body;
-      left.appendChild(who); if (m.subject) left.appendChild(subject); left.appendChild(snippet);
-      const right = document.createElement('div'); right.style.textAlign='right';
-      const date = document.createElement('div'); date.className='message-date'; date.textContent = m.created_at;
-      right.appendChild(date);
-      card.appendChild(left); card.appendChild(right);
-      list.appendChild(card);
+      const isMe = (parseInt(m.sender_id,10) === parseInt(window.USER_ID,10));
+      const row = document.createElement('div'); row.className = 'chat-row ' + (isMe ? 'outgoing' : 'incoming');
+
+      // avatar for incoming/outgoing
+      if (!isMe) {
+        const img = document.createElement('img'); img.className = 'chat-avatar';
+        img.src = m.sender_pic ? ('/brilliance/uploads/' + m.sender_pic) : '/brilliance/assets/images/logo.png';
+        img.alt = m.sender_name || 'User';
+        row.appendChild(img);
+      }
+
+      const col = document.createElement('div'); col.style.display = 'flex'; col.style.flexDirection = 'column'; col.style.alignItems = isMe ? 'flex-end' : 'flex-start';
+      const bubble = document.createElement('div');
+      bubble.className = 'bubble ' + (isMe ? 'outgoing' : 'incoming');
+      bubble.innerHTML = '<div style="font-size:14px;">' + (m.subject ? '<strong>' + escapeHtml(m.subject) + '</strong><br>' : '') + escapeHtml(m.body) + '</div>';
+      const meta = document.createElement('div'); meta.className = 'chat-meta'; meta.textContent = (isMe ? 'You' : (m.sender_name || 'User')) + ' · ' + m.created_at;
+      col.appendChild(bubble);
+      col.appendChild(meta);
+      row.appendChild(col);
+
+      if (isMe) {
+        const img = document.createElement('img'); img.className = 'chat-avatar';
+        img.src = window.USER_AVATAR ? ('/brilliance/uploads/' + window.USER_AVATAR) : '/brilliance/assets/images/logo.png';
+        img.alt = 'You';
+        row.appendChild(img);
+      }
+
+      thread.appendChild(row);
     });
-    // scroll to bottom
-    list.scrollTop = list.scrollHeight;
+    list.appendChild(thread);
+    // smooth scroll to bottom
+    list.scrollTo({ top: list.scrollHeight, behavior: 'smooth' });
+  }
+
+  function escapeHtml(str){
+    if (!str) return '';
+    return String(str).replace(/[&<>\"]/g, function(s){ return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[s]; });
   }
 
   async function fetchConversation(){
