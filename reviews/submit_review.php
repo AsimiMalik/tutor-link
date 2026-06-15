@@ -3,6 +3,7 @@ session_start();
 require_once __DIR__ . '/../includes/csrf.php';
 if (!isset($_SESSION['user_id'])) { header('Location: ../auth/login.php'); exit(); }
 $reviewee = isset($_GET['tutor_id']) ? (int)$_GET['tutor_id'] : 0;
+$booking_id = isset($_GET['booking_id']) ? (int)$_GET['booking_id'] : 0;
 ?>
 <!doctype html>
 <html>
@@ -16,6 +17,9 @@ $reviewee = isset($_GET['tutor_id']) ? (int)$_GET['tutor_id'] : 0;
     <form method="post" action="../processes/submit-review.php">
         <?php echo csrf_field(); ?>
         <input type="hidden" name="reviewee_id" value="<?= $reviewee ?>">
+        <?php if ($booking_id): ?>
+            <input type="hidden" name="booking_id" value="<?= $booking_id ?>">
+        <?php endif; ?>
         <label>Rating (1-5)</label>
         <input type="number" name="rating" min="1" max="5" required>
         <label>Title (optional)</label>

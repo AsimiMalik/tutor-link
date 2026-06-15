@@ -11,10 +11,13 @@
 
 /* Form */
 .message-form{
-  background: #fff;
+  /* glass style */
+  background: var(--glass-bg);
+  backdrop-filter: blur(6px) saturate(120%);
+  -webkit-backdrop-filter: blur(6px) saturate(120%);
   padding: 18px;
   border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(2,6,23,0.06);
+  border: 1px solid var(--glass-border);
 }
 .message-form label{ display:block; margin:10px 0 6px; font-weight:600; color:#475569; }
 .message-form input[type="text"], .message-form input[type="number"], .message-form textarea{
@@ -26,15 +29,15 @@
 /* List */
 .message-list{ display:flex; flex-direction:column; gap:12px; margin-top:12px; }
 .message-card{
-  background:#fff;
+  background: rgba(255,255,255,0.9);
   padding:14px;
-  border-radius:10px;
-  box-shadow:0 10px 30px rgba(17,24,39,0.04);
+  border-radius:12px;
+  box-shadow:0 10px 30px rgba(16,24,40,0.06);
   display:flex;
   justify-content:space-between;
   gap:12px;
   align-items:flex-start;
-  border-left:4px solid rgba(99,102,241,0.06);
+  border-left:4px solid rgba(37,99,235,0.06);
 }
 .message-meta{ display:flex; flex-direction:column; gap:6px; max-width:72%; }
 .message-subject{ font-weight:700; color:#0f172a; font-size:15px; }
@@ -50,7 +53,7 @@
 /* refined buttons */
 .btn { padding:8px 12px; border-radius:8px; text-decoration:none; display:inline-block; }
 .btn-outline { background: transparent; border:1px solid rgba(15,23,42,0.06); color:#0f172a; }
-.btn-primary { background:#4f46e5; color:#fff; }
+.btn-primary { background: linear-gradient(90deg,var(--primary),var(--primary-dark)); color:#fff; }
 
 /* Single message view */
 .message-detail{ background:#fff; padding:18px; border-radius:10px; box-shadow:0 6px 20px rgba(2,6,23,0.05); }

@@ -41,7 +41,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'tutor') {
 CONNECT DATABASE
 ----------------------------------------------------
 */
-require_once "../classes/database.php";
+require_once "../classes/Database.php";
 
 $db = new Database();
 $conn = $db->connect();
@@ -97,6 +97,27 @@ if (isset($_FILES['profile_pic']) && $_FILES['profile_pic']['error'] == 0) {
     }
 }
 
+// qualification file upload (optional)
+$qualification_file_name = null;
+if (isset($_FILES['qualification_file']) && $_FILES['qualification_file']['error'] == 0) {
+    $qfile = $_FILES['qualification_file'];
+    $qext = strtolower(pathinfo($qfile['name'], PATHINFO_EXTENSION));
+    $allowed = ['pdf','doc','docx','jpg','jpeg','png'];
+    if (!in_array($qext, $allowed)) {
+        $_SESSION['error'] = 'Invalid qualification file type. Allowed: pdf, doc, docx, jpg, png';
+        header('Location: ../tutor/tutor-edit-profile.php'); exit();
+    }
+    $qfile_name = time() . "_qual_" . basename($qfile['name']);
+    $qtarget_dir = __DIR__ . '/../uploads/qualifications/';
+    if (!is_dir($qtarget_dir)) mkdir($qtarget_dir, 0755, true);
+    $qtarget_file = $qtarget_dir . $qfile_name;
+    if (move_uploaded_file($qfile['tmp_name'], $qtarget_file)) {
+        $qualification_file_name = $qfile_name;
+    } else {
+        $_SESSION['error'] = 'Unable to save qualification file.';
+    }
+}
+
 /*
 ----------------------------------------------------
 CHECK IF PROFILE EXISTS
@@ -113,39 +134,45 @@ IF PROFILE EXISTS → UPDATE
 */
 if ($exists) {
 
-    if ($profile_pic_name) {
-        $stmt = $conn->prepare(""
-            . "UPDATE tutor_profile \n"
-            . "SET bio = ?, qualification = ?, experience = ?, location = ?, hourly_rate = ?, profile_pic = ?\n"
-            . "WHERE user_id = ?"
-        );
+        if ($profile_pic_name) {
+            $stmt = $conn->prepare(
+                "UPDATE tutor_profile \n"
+                . "SET bio = ?, qualification = ?, experience = ?, location = ?, hourly_rate = ?, profile_pic = ?, qualification_file = ?\n"
+                . "WHERE user_id = ?"
+            );
 
-        $stmt->execute([
-            $bio,
-            $qualification,
-            $experience,
-            $location,
-            $hourly_rate,
-            $profile_pic_name,
-            $user_id
-        ]);
+            $stmt->execute([
+                $bio,
+                $qualification,
+                $experience,
+                $location,
+                $hourly_rate,
+                $profile_pic_name,
+                $qualification_file_name,
+                $user_id
+            ]);
 
-    } else {
-        $stmt = $conn->prepare(""
-            . "UPDATE tutor_profile \n"
-            . "SET bio = ?, qualification = ?, experience = ?, location = ?, hourly_rate = ?\n"
-            . "WHERE user_id = ?"
-        );
-
-        $stmt->execute([
-            $bio,
-            $qualification,
-            $experience,
-            $location,
-            $hourly_rate,
-            $user_id
-        ]);
-    }
+        } else {
+            // handle case where only qualification file uploaded
+            if ($qualification_file_name) {
+                $stmt = $conn->prepare("UPDATE tutor_profile SET bio = ?, qualification = ?, experience = ?, location = ?, hourly_rate = ?, qualification_file = ? WHERE user_id = ?");
+                $stmt->execute([$bio,$qualification,$experience,$location,$hourly_rate,$qualification_file_name,$user_id]);
+            } else {
+                $stmt = $conn->prepare(
+                    "UPDATE tutor_profile \n"
+                    . "SET bio = ?, qualification = ?, experience = ?, location = ?, hourly_rate = ?\n"
+                    . "WHERE user_id = ?"
+                );
+                $stmt->execute([
+                    $bio,
+                    $qualification,
+                    $experience,
+                    $location,
+                    $hourly_rate,
+                    $user_id
+                ]);
+            }
+        }
 
 }
 
@@ -156,10 +183,10 @@ IF PROFILE DOES NOT EXIST → INSERT
 */
 else {
 
-    $stmt = $conn->prepare(""
-        . "INSERT INTO tutor_profile \n"
-        . "(user_id, bio, qualification, experience, location, hourly_rate, profile_pic)\n"
-        . "VALUES (?, ?, ?, ?, ?, ?, ?)"
+    $stmt = $conn->prepare(
+        "INSERT INTO tutor_profile \n"
+        . "(user_id, bio, qualification, experience, location, hourly_rate, profile_pic, qualification_file)\n"
+        . "VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
     );
 
     $stmt->execute([
@@ -169,7 +196,8 @@ else {
         $experience,
         $location,
         $hourly_rate,
-        $profile_pic_name
+        $profile_pic_name,
+        $qualification_file_name
     ]);
 }
 

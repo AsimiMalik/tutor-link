@@ -1,18 +1,33 @@
 
 <?php
 if (session_status() === PHP_SESSION_NONE) session_start();
+
+// If a specific role navbar exists, delegate to it so role-specific links show.
+if (!empty($_SESSION['role'])) {
+  $role = $_SESSION['role'];
+  if ($role === 'tutor' && file_exists(__DIR__ . '/tutor-navbar.php')) {
+    include __DIR__ . '/tutor-navbar.php';
+    return;
+  }
+  if ($role === 'parent' && file_exists(__DIR__ . '/parent-navbar.php')) {
+    include __DIR__ . '/parent-navbar.php';
+    return;
+  }
+  // future: handle admin etc.
+}
+
 $loggedIn = !empty($_SESSION['user_id']);
 $unread = 0;
 if ($loggedIn) {
-    try {
-        require_once __DIR__ . '/../classes/database.php';
-        $db = new Database(); $conn = $db->connect();
-        $stmt = $conn->prepare('SELECT COUNT(*) FROM messages WHERE receiver_id = ? AND is_read = 0 AND deleted_by_receiver = 0');
-        $stmt->execute([$_SESSION['user_id']]);
-        $unread = (int)$stmt->fetchColumn();
-    } catch (Exception $e) {
-        $unread = 0;
-    }
+  try {
+    require_once __DIR__ . '/../classes/Database.php';
+    $db = new Database(); $conn = $db->connect();
+    $stmt = $conn->prepare('SELECT COUNT(*) FROM messages WHERE receiver_id = ? AND is_read = 0 AND deleted_by_receiver = 0');
+    $stmt->execute([$_SESSION['user_id']]);
+    $unread = (int)$stmt->fetchColumn();
+  } catch (Exception $e) {
+    $unread = 0;
+  }
 }
 ?>
 

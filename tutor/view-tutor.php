@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once __DIR__ . '/../classes/database.php';
+require_once __DIR__ . '/../classes/Database.php';
 require_once __DIR__ . '/../classes/Review.php';
 
 $db = new Database();
@@ -30,6 +30,8 @@ try {
 } catch (PDOException $e) {
     $subjects = [];
 }
+// ensure review helper is available and reuse same DB connection
+$reviewObj = new Review($conn);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -58,10 +60,19 @@ try {
                 <h2><?php echo htmlspecialchars($data['fullname']); ?> <span class="badge"><?php echo (int)($data['is_verified'] ?? 0) ? 'Verified' : ''; ?></span></h2>
                 <p class="location">📍 <?php echo htmlspecialchars($data['location'] ?? 'Not set'); ?></p>
                 <?php
-                $reviewObj = new Review();
-                $avg = $reviewObj->getAverage($id);
-                $avg_display = $avg && $avg['avg_rating'] ? number_format($avg['avg_rating'],2) : '0';
-                $total_reviews = $avg && isset($avg['total']) ? (int)$avg['total'] : 0;
+                // Prefer stored tutor_profile values (kept up-to-date when reviews are submitted),
+                // fallback to calculating live from reviews if profile values missing.
+                $total_reviews = 0;
+                $avg_display = '0';
+                if (!empty($data['rating_avg']) || !empty($data['total_reviews'])) {
+                    $avg_display = isset($data['rating_avg']) ? number_format((float)$data['rating_avg'],2) : '0';
+                    $total_reviews = isset($data['total_reviews']) ? (int)$data['total_reviews'] : 0;
+                } else {
+                    $reviewObj = new Review();
+                    $avg = $reviewObj->getAverage($id);
+                    $avg_display = $avg && $avg['avg_rating'] ? number_format($avg['avg_rating'],2) : '0';
+                    $total_reviews = $avg && isset($avg['total']) ? (int)$avg['total'] : 0;
+                }
                 ?>
                 <p class="rating">⭐ <?php echo $avg_display; ?> (<?php echo $total_reviews; ?> reviews)</p>
                 <div class="action-buttons">
@@ -132,6 +143,23 @@ try {
             <div class="section">
                 <h3>Experience</h3>
                 <p><?php echo nl2br(htmlspecialchars($data['experience'] ?? 'No experience provided')); ?></p>
+            </div>
+
+            <div class="section">
+                <h3>Qualifications</h3>
+                <?php if (!empty($data['qualification_file'])): 
+                    $qual = htmlspecialchars($data['qualification_file']);
+                    $ext = strtolower(pathinfo($qual, PATHINFO_EXTENSION));
+                ?>
+                    <p><a href="/brilliance/uploads/qualifications/<?php echo $qual; ?>" target="_blank">View / Download qualification document</a></p>
+                    <?php if ($ext === 'pdf'): ?>
+                        <div style="margin-top:8px">
+                            <embed src="/brilliance/uploads/qualifications/<?php echo $qual; ?>" type="application/pdf" width="100%" height="300px" />
+                        </div>
+                    <?php endif; ?>
+                <?php else: ?>
+                    <p>No qualification documents uploaded.</p>
+                <?php endif; ?>
             </div>
 
             <div class="section">

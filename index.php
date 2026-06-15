@@ -130,79 +130,40 @@ include 'includes/navbar.php';?>
     </div>
 
     <div class="tutors-grid">
+      <?php
+      // dynamic top 3 tutors by rating
+      require_once __DIR__ . '/classes/Database.php';
+      try {
+          $db = new Database(); $conn = $db->connect();
+          $sql = "SELECT u.id, u.fullname, t.profile_pic, COALESCE(t.rating_avg,0) AS rating_avg, COALESCE(t.total_reviews,0) AS total_reviews, t.hourly_rate, t.location, t.bio FROM users u LEFT JOIN tutor_profile t ON u.id = t.user_id WHERE u.role = 'tutor' ORDER BY t.rating_avg DESC, t.total_reviews DESC LIMIT 3";
+          $stmt = $conn->prepare($sql);
+          $stmt->execute();
+          $top = $stmt->fetchAll(PDO::FETCH_ASSOC);
+      } catch (Exception $e) {
+          $top = [];
+      }
 
-      <div class="tutor-card">
-
-        <img src="assets/images/logo.png" alt="Tutor">
-
-        <div class="rating">
-          ⭐⭐⭐⭐⭐
-        </div>
-
-        <h3>David Musa</h3>
-
-        <span class="subject">
-          Mathematics Tutor
-        </span>
-
-        <p>
-          8+ years of experience helping students excel in Mathematics.
-        </p>
-
-        <a href="auth/login.php" class="btn-primary">
-          View Profile
-        </a>
-
-      </div>
-
-      <div class="tutor-card">
-
-        <img src="assets/images/hero-image.png" alt="Tutor">
-
-        <div class="rating">
-          ⭐⭐⭐⭐⭐
-        </div>
-
-        <h3>Grace Okafor</h3>
-
-        <span class="subject">
-          English Tutor
-        </span>
-
-        <p>
-          Specialist in WAEC, NECO and secondary school English preparation.
-        </p>
-
-        <a href="auth/login.php" class="btn-primary">
-          View Profile
-        </a>
-
-      </div>
-
-      <div class="tutor-card">
-
-        <img src="assets/images/logo.png" alt="Tutor">
-
-        <div class="rating">
-          ⭐⭐⭐⭐⭐
-        </div>
-
-        <h3>John Michael</h3>
-
-        <span class="subject">
-          Physics Tutor
-        </span>
-
-        <p>
-          Passionate about simplifying Physics and Science concepts.
-        </p>
-
-        <a href="auth/login.php" class="btn-primary">
-          View Profile
-        </a>
-
-      </div>
-
+      if (empty($top)) {
+          echo '<p>No top tutors available yet.</p>';
+      } else {
+          foreach ($top as $t) {
+              $img = !empty($t['profile_pic']) ? '/brilliance/uploads/' . htmlspecialchars($t['profile_pic']) : 'assets/images/logo.png';
+              $rating = isset($t['rating_avg']) ? number_format((float)$t['rating_avg'],2) : '0.00';
+              $reviews = isset($t['total_reviews']) ? (int)$t['total_reviews'] : 0;
+              $bio = !empty($t['bio']) ? htmlspecialchars(substr($t['bio'],0,120)) : '';
+              $name = htmlspecialchars($t['fullname']);
+              $link = '/brilliance/tutor/view-tutor.php?id=' . (int)$t['id'];
+              echo "<div class=\"tutor-card\">";
+              echo "<img src=\"{$img}\" alt=\"Tutor\">";
+              echo "<div class=\"rating\">⭐ {$rating} ({$reviews})</div>";
+              echo "<h3>{$name}</h3>";
+              echo "<span class=\"subject\">" . ($t['location'] ? htmlspecialchars($t['location']) : 'Tutor') . "</span>";
+              echo "<p>{$bio}</p>";
+              echo "<a href=\"{$link}\" class=\"btn-primary\">View Profile</a>";
+              echo "</div>";
+          }
+      }
+      ?>
     </div>
 
   </div>

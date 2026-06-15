@@ -102,6 +102,28 @@ $bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     </form>
                     <?php endif; ?>
 
+                    <!-- Attendance controls -->
+                    <?php
+                        // fetch existing attendance for this booking (if any)
+                        require_once __DIR__ . '/../classes/Database.php';
+                        require_once __DIR__ . '/../classes/SessionReport.php';
+                        $tmpdb = new Database(); $tmpconn = $tmpdb->connect();
+                        $srObj = new SessionReport($tmpconn);
+                        $existing = $srObj->getByBooking($b['id']);
+                        $currentAttendance = $existing['attendance'] ?? '';
+                    ?>
+                    <form method="POST" action="../processes/mark-attendance.php" style="display:inline-block;">
+                        <?php echo csrf_field(); ?>
+                        <input type="hidden" name="booking_id" value="<?php echo (int)$b['id']; ?>">
+                        <select name="attendance">
+                            <option value="" <?php if($currentAttendance==="") echo 'selected'; ?>>Mark attendance</option>
+                            <option value="present" <?php if($currentAttendance==='present') echo 'selected'; ?>>Present</option>
+                            <option value="late" <?php if($currentAttendance==='late') echo 'selected'; ?>>Late</option>
+                            <option value="absent" <?php if($currentAttendance==='absent') echo 'selected'; ?>>Absent</option>
+                        </select>
+                        <button class="btn-outline" type="submit">Save</button>
+                    </form>
+
                     <form method="POST" action="../processes/update-booking-status.php">
                         <input type="hidden" name="booking_id" value="<?php echo $b['id']; ?>">
                         <?php echo csrf_field(); ?>

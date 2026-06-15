@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once __DIR__ . '/classes/database.php';
+require_once __DIR__ . '/classes/Database.php';
 
 $db = new Database();
 $conn = $db->connect();

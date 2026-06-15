@@ -65,6 +65,13 @@ require_once __DIR__ . '/../includes/csrf.php';
     <!-- QUALIFICATION -->
     <label>Qualifications</label>
     <textarea name="qualification" placeholder="List degrees, certifications, institutions, years etc."><?php echo htmlspecialchars($data['qualification'] ?? ''); ?></textarea>
+    <div style="margin-top:8px;margin-bottom:12px">
+        <label>Upload Qualification Document (PDF/DOC/JPG/PNG)</label>
+        <input type="file" name="qualification_file">
+        <?php if (!empty($data['qualification_file'])): ?>
+            <div style="margin-top:8px"><a href="/brilliance/uploads/qualifications/<?php echo htmlspecialchars($data['qualification_file']); ?>" target="_blank">View current uploaded qualification</a></div>
+        <?php endif; ?>
+    </div>
 
     <!-- EXPERIENCE -->
     <label>Experience</label>
