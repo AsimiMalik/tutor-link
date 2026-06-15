@@ -8,7 +8,9 @@ if (!isset($_POST['_csrf']) || !verify_csrf($_POST['_csrf'])) { http_response_co
 $receiver_id = (int)($_POST['receiver_id'] ?? 0);
 $body = trim($_POST['body'] ?? '');
 $subject = trim($_POST['subject'] ?? '');
+// normalize booking_id: treat empty or zero as null to avoid FK violations
 $booking_id = isset($_POST['booking_id']) && $_POST['booking_id'] !== '' ? (int)$_POST['booking_id'] : null;
+if ($booking_id !== null && $booking_id <= 0) $booking_id = null;
 if ($receiver_id <= 0 || $body === '') { http_response_code(400); echo json_encode(['error'=>'invalid_payload']); exit(); }
 // validate receiver exists
 require_once __DIR__ . '/../classes/Database.php';
@@ -17,6 +19,23 @@ $u = $conn->prepare('SELECT id FROM users WHERE id = ? LIMIT 1');
 $u->execute([$receiver_id]);
 $exists = $u->fetchColumn();
 if (!$exists) { http_response_code(400); echo json_encode(['error'=>'invalid_receiver']); exit(); }
+// If booking_id provided, ensure it exists
+if ($booking_id !== null) {
+    try {
+        $b = $conn->prepare('SELECT id FROM bookings WHERE id = ? LIMIT 1');
+        $b->execute([$booking_id]);
+        if (!$b->fetchColumn()) {
+            // invalid booking - clear to null
+            $logDir = __DIR__ . '/../logs'; if (!is_dir($logDir)) @mkdir($logDir,0755,true);
+            $logFile = $logDir . '/message_errors.log';
+            $note = date('c') . " - warning: invalid booking_id {$booking_id} for ajax send sender={$_SESSION['user_id']} receiver={$receiver_id} - clearing to NULL\n";
+            file_put_contents($logFile, $note, FILE_APPEND | LOCK_EX);
+            $booking_id = null;
+        }
+    } catch (Exception $e) {
+        $booking_id = null;
+    }
+}
 require_once __DIR__ . '/../classes/Message.php';
 $msg = new Message();
 try {
