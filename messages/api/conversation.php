@@ -7,7 +7,12 @@ if ($other <= 0) { http_response_code(400); echo json_encode(['error'=>'invalid_
 require_once __DIR__ . '/../../classes/Database.php';
 $db = new Database(); $conn = $db->connect();
 // fetch last 200 messages between the two users
-$stmt = $conn->prepare("SELECT m.id, m.sender_id, m.receiver_id, m.subject, m.body, m.created_at, m.is_read FROM messages m WHERE (m.sender_id = ? AND m.receiver_id = ?) OR (m.sender_id = ? AND m.receiver_id = ?) ORDER BY m.id ASC LIMIT 1000");
+$stmt = $conn->prepare("SELECT m.id, m.sender_id, m.receiver_id, m.subject, m.body, m.created_at, m.is_read,
+    su.fullname AS sender_name, ru.fullname AS receiver_name
+    FROM messages m
+    JOIN users su ON m.sender_id = su.id
+    JOIN users ru ON m.receiver_id = ru.id
+    WHERE (m.sender_id = ? AND m.receiver_id = ?) OR (m.sender_id = ? AND m.receiver_id = ?) ORDER BY m.id ASC LIMIT 1000");
 $stmt->execute([$_SESSION['user_id'],$other,$other,$_SESSION['user_id']]);
 $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 // mark unread messages as read when they were sent to current user

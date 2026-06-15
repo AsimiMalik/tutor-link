@@ -12,7 +12,9 @@
     messages.forEach(m => {
       const card = document.createElement('div'); card.className='message-card';
       const left = document.createElement('div'); left.className='message-meta';
-      const who = document.createElement('div'); who.style.fontWeight='700'; who.textContent = (m.sender_id == window.USER_ID ? 'You' : 'Them');
+      const who = document.createElement('div'); who.style.fontWeight='700';
+      // show 'You' for current user's messages, otherwise show the sender's full name if available
+      who.textContent = (m.sender_id == window.USER_ID ? 'You' : (m.sender_name || 'User'));
       const subject = document.createElement('div'); subject.className='message-subject'; subject.textContent = (m.subject || '');
       const snippet = document.createElement('div'); snippet.className='message-snippet'; snippet.textContent = m.body;
       left.appendChild(who); if (m.subject) left.appendChild(subject); left.appendChild(snippet);
